@@ -3,26 +3,111 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.HomeController"
-      spacing="10" style="-fx-padding: 20;">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.HomeController"
+            style="-fx-background-color: #121212;">
 
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" promptText="Cerca canzoni o artisti..."
-                   prefWidth="300" onAction="#handleSearch"/>
-        <Button text="Cerca" onAction="#handleSearch"/>
-    </HBox>
+    <!-- Header -->
+    <top>
+        <VBox style="-fx-background-color: #1DB954; -fx-padding: 20;">
+            <Label text="Spotify Recommender"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Esplora migliaia di canzoni"
+                   style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
+                <VBox.margin>
+                    <Insets top="5"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </top>
 
-    <TableView fx:id="songTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="nameColumn" text="Titolo" prefWidth="250"/>
-            <TableColumn fx:id="artistColumn" text="Artisti" prefWidth="200"/>
-            <TableColumn fx:id="popularityColumn" text="Popolarità" prefWidth="100"/>
-        </columns>
-    </TableView>
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;">
 
-    <HBox spacing="10" alignment="CENTER">
-        <Button fx:id="prevButton" text="← Precedente" onAction="#handlePrevious"/>
-        <Label fx:id="pageLabel" text="Pagina 1"/>
-        <Button fx:id="nextButton" text="Successiva →" onAction="#handleNext"/>
-    </HBox>
-</VBox>
+            <!-- Search Bar -->
+            <HBox spacing="10" alignment="CENTER"
+                  style="-fx-background-color: #282828; -fx-background-radius: 25; -fx-padding: 10 20;">
+                <TextField fx:id="searchField"
+                           promptText="🔍 Cerca canzoni, artisti..."
+                           prefWidth="400"
+                           onAction="#handleSearch"
+                           style="-fx-background-color: transparent;
+                                 -fx-text-fill: white;
+                                 -fx-prompt-text-fill: #b3b3b3;
+                                 -fx-font-size: 14px;
+                                 -fx-border-color: transparent;"/>
+                <Button text="Cerca"
+                        onAction="#handleSearch"
+                        style="-fx-background-color: #1DB954;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+            </HBox>
+
+            <!-- Songs Table -->
+            <TableView fx:id="songTable"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: #181818;
+                             -fx-control-inner-background: #181818;
+                             -fx-table-cell-border-color: transparent;">
+                <columns>
+                    <TableColumn fx:id="nameColumn"
+                                 text="🎵 Titolo"
+                                 prefWidth="300"
+                                 style="-fx-text-fill: white;"/>
+                    <TableColumn fx:id="artistColumn"
+                                 text="🎤 Artisti"
+                                 prefWidth="250"
+                                 style="-fx-text-fill: white;"/>
+                    <TableColumn fx:id="popularityColumn"
+                                 text="⭐ Popolarità"
+                                 prefWidth="120"
+                                 style="-fx-text-fill: white;"/>
+                </columns>
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </TableView>
+
+        </VBox>
+    </center>
+
+    <!-- Footer with Pagination -->
+    <bottom>
+        <HBox spacing="15"
+              alignment="CENTER"
+              style="-fx-background-color: #181818; -fx-padding: 20;">
+
+            <Button fx:id="prevButton"
+                    text="⬅ Precedente"
+                    onAction="#handlePrevious"
+                    style="-fx-background-color: #282828;
+                           -fx-text-fill: white;
+                           -fx-font-size: 13px;
+                           -fx-background-radius: 20;
+                           -fx-padding: 10 25;
+                           -fx-cursor: hand;"/>
+
+            <Label fx:id="pageLabel"
+                   text="Pagina 1"
+                   style="-fx-text-fill: white;
+                          -fx-font-size: 14px;
+                          -fx-font-weight: bold;
+                          -fx-padding: 10 20;"/>
+
+            <Button fx:id="nextButton"
+                    text="Successiva ➡"
+                    onAction="#handleNext"
+                    style="-fx-background-color: #1DB954;
+                           -fx-text-fill: white;
+                           -fx-font-size: 13px;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 20;
+                           -fx-padding: 10 25;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

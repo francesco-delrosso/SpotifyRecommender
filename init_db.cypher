@@ -9,6 +9,9 @@ FOR (u:User) REQUIRE u.userId IS UNIQUE;
 CREATE CONSTRAINT user_email IF NOT EXISTS
 FOR (u:User) REQUIRE u.email IS UNIQUE;
 
+CREATE CONSTRAINT user_username IF NOT EXISTS
+FOR (u:User) REQUIRE u.username IS UNIQUE;
+
 CREATE CONSTRAINT song_id IF NOT EXISTS
 FOR (s:Song) REQUIRE s.songId IS UNIQUE;
 
@@ -45,6 +48,9 @@ FOR (u:User) ON (u.email);
 
 LOAD CSV WITH HEADERS FROM 'file:///dataset.csv' AS row
 WITH row WHERE row.track_id IS NOT NULL AND row.track_id <> ''
+AND row.album_name IS NOT NULL AND row.album_name <> ''
+AND row.artists IS NOT NULL AND row.artists <> ''
+AND row.track_genre IS NOT NULL AND row.track_genre <> ''
 
 // Crea o trova il Genre
 MERGE (g:Genre {genreId: row.track_genre})

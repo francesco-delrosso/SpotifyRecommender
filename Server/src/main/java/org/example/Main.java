@@ -5,7 +5,7 @@ import java.net.*;
 import org.neo4j.driver.*;
 
 public class Main {
-    private static final int PORT = 7777;
+    private static final int PORT = 6666;
     private static Driver neo4jDriver;
 
     public static void main(String[] args) {

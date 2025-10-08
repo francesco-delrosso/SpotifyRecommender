@@ -5,7 +5,7 @@ import java.net.*;
 
 public class ClientService {
     private static final String SERVER_HOST = "localhost";
-    private static final int SERVER_PORT = 7777;
+    private static final int SERVER_PORT = 6666;
 
     private Socket socket;
     private BufferedReader in;
