@@ -19,6 +19,24 @@ public class ClientService {
         connected = true;
     }
 
+    public String getSongs(int page, int pageSize) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("GET_SONGS|" + page + "|" + pageSize);
+        return in.readLine();
+    }
+
+    public String searchSongs(String searchTerm, int page, int pageSize) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("SEARCH_SONGS|" + searchTerm + "|" + page + "|" + pageSize);
+        return in.readLine();
+    }
+
+
+
     public String login(String email, String password) throws IOException {
         if (!connected) {
             connect();

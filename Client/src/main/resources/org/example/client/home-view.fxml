@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.HomeController"
+      spacing="10" style="-fx-padding: 20;">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Cerca canzoni o artisti..."
+                   prefWidth="300" onAction="#handleSearch"/>
+        <Button text="Cerca" onAction="#handleSearch"/>
+    </HBox>
+
+    <TableView fx:id="songTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Titolo" prefWidth="250"/>
+            <TableColumn fx:id="artistColumn" text="Artisti" prefWidth="200"/>
+            <TableColumn fx:id="popularityColumn" text="Popolarità" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="prevButton" text="← Precedente" onAction="#handlePrevious"/>
+        <Label fx:id="pageLabel" text="Pagina 1"/>
+        <Button fx:id="nextButton" text="Successiva →" onAction="#handleNext"/>
+    </HBox>
+</VBox>

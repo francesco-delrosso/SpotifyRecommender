@@ -11,13 +11,17 @@ class ClientHandler extends Thread {
     private Socket socket;
     private Driver driver;
     private AuthService authService;
+    private SongService songService;
     private BufferedReader in;
     private PrintWriter out;
+
 
     public ClientHandler(Socket socket, org.neo4j.driver.Driver driver){
         this.socket = socket;
         this.driver = driver;
         this.authService = new AuthService(driver);
+        this.songService = new SongService(driver);
+
     }
 
     @Override
@@ -62,9 +66,52 @@ class ClientHandler extends Thread {
                     out.println("ERROR|Formato non valido");
                 }
                 break;
+            case "GET_SONGS":
+                if (parts.length == 3) {
+                    handleGetSongs(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+                } else {
+                    out.println("ERROR|Formato non valido");
+                }
+                break;
+
+            case "SEARCH_SONGS":
+                if (parts.length == 4) {
+                    handleSearchSongs(parts[1], Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
+                } else {
+                    out.println("ERROR|Formato non valido");
+                }
+                break;
 
             default:
                 out.println("ERROR|Comando sconosciuto");
+        }
+    }
+
+    private void handleSearchSongs(String searchTerm, int page, int pageSize) {
+        SongService.SongListResult result = songService.searchSongs(searchTerm, page, pageSize);
+
+        if (result.isSuccess()) {
+            StringBuilder response = new StringBuilder("SONGS|");
+            for (SongService.SongInfo song : result.getSongs()) {
+                response.append(song.toProtocolString()).append("|");
+            }
+            out.println(response.toString());
+        } else {
+            out.println("ERROR|" + result.getMessage());
+        }
+    }
+
+    private void handleGetSongs(int page, int pageSize) {
+        SongService.SongListResult result = songService.getSongs(page, pageSize);
+
+        if (result.isSuccess()) {
+            StringBuilder response = new StringBuilder("SONGS|");
+            for (SongService.SongInfo song : result.getSongs()) {
+                response.append(song.toProtocolString()).append("|");
+            }
+            out.println(response.toString());
+        } else {
+            out.println("ERROR|" + result.getMessage());
         }
     }
 

@@ -2,8 +2,14 @@ package org.example.client;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
     @FXML private VBox loginPane;
@@ -50,9 +56,8 @@ public class LoginController {
             String[] parts = response.split("\\|");
 
             if (parts[0].equals("SUCCESS")) {
-                showSuccess("Login riuscito! Benvenuto, " + parts[1] + "!");
-                loginEmail.clear();
-                loginPassword.clear();
+                String userId = parts[1];
+                navigateToHome(userId);
             } else {
                 showError(parts[1]);
             }
@@ -76,14 +81,32 @@ public class LoginController {
             String[] parts = response.split("\\|");
 
             if (parts[0].equals("SUCCESS")) {
-                showSuccess("Registrazione completata! Benvenuto, " + parts[1] + "!");
-                registerEmail.clear();
-                registerPassword.clear();
+                String userId = parts[1];
+                navigateToHome(userId);
             } else {
                 showError(parts[1]);
             }
         } catch (Exception e) {
             showError("Errore: " + e.getMessage());
+        }
+    }
+
+    private void navigateToHome(String userId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            Parent root = loader.load();
+
+            HomeController homeController = loader.getController();
+            homeController.setUserId(userId);
+            homeController.setClientService(clientService);
+
+            Stage stage = (Stage) loginEmail.getScene().getWindow();
+            Scene scene = new Scene(root, 800, 600);
+            stage.setScene(scene);
+            stage.setTitle("Spotify Recommender - Home");
+        } catch (IOException e) {
+            showError("Errore nel caricamento della home: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -136,4 +159,3 @@ public class LoginController {
         }
     }
 }
-
