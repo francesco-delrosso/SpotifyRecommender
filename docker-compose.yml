@@ -1,0 +1,33 @@
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j-demo
+    environment:
+      - NEO4J_AUTH=neo4j/Madrid2025!   # user: neo4j, password: Madrid2025!
+      - NEO4JLABS_PLUGINS=["apoc"]
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_dbms_directories_import=/import
+    ports:
+      - "7474:7474"   # Neo4j Browser
+      - "7687:7687"   # Bolt (Python, Java, ecc.)
+    volumes:
+      - ./data:/data
+      - ./import:/import
+      - ./logs:/logs
+    restart: always
+
+  jupyter:
+    image: jupyter/base-notebook:latest
+    container_name: jupyter-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - JUPYTER_TOKEN=                # ← lasciato vuoto: disabilita il token
+      - JUPYTER_ENABLE_LAB=yes        # (facoltativo: apre JupyterLab invece di Classic)
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''  # ← forzato vuoto
+    depends_on:
+      - neo4j
+    restart: unless-stopped
+
