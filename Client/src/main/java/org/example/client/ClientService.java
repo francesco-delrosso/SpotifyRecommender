@@ -57,6 +57,78 @@ public class ClientService {
         return response;
     }
 
+    // Ricerca utente per email
+    public String searchUser(String email) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("SEARCH_USER|" + email);
+        return in.readLine();
+    }
+
+    // Invia richiesta di amicizia
+    public String sendFriendRequest(String fromEmail, String toEmail) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("SEND_FRIEND_REQUEST|" + fromEmail + "|" + toEmail);
+        return in.readLine();
+    }
+
+    // Accetta richiesta di amicizia
+    public String acceptFriendRequest(String userEmail, String requesterEmail) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("ACCEPT_FRIEND_REQUEST|" + userEmail + "|" + requesterEmail);
+        return in.readLine();
+    }
+
+    // Rifiuta richiesta di amicizia
+    public String rejectFriendRequest(String userEmail, String requesterEmail) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("REJECT_FRIEND_REQUEST|" + userEmail + "|" + requesterEmail);
+        return in.readLine();
+    }
+
+    // Elimina amicizia
+    public String removeFriendship(String email1, String email2) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("REMOVE_FRIENDSHIP|" + email1 + "|" + email2);
+        return in.readLine();
+    }
+
+    // Lista amici
+    public String getFriends(String email) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("GET_FRIENDS|" + email);
+        return in.readLine();
+    }
+
+    // Lista richieste di amicizia ricevute
+    public String getFriendRequests(String email) throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("GET_FRIEND_REQUESTS|" + email);
+        return in.readLine();
+    }
+
+    public String getAllUsers() throws IOException {
+        if (!connected) {
+            connect();
+        }
+        out.println("GET_ALL_USERS");
+        return in.readLine();
+    }
+
+
     public void disconnect() {
         try {
             if (socket != null && !socket.isClosed()) {

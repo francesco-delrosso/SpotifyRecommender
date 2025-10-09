@@ -100,18 +100,3 @@ MERGE (album)-[:BY_ARTIST]->(artist)
 WITH s, album, g
 MERGE (s)-[:IN_ALBUM]->(album)
 MERGE (s)-[:HAS_GENRE]->(g);
-
-
-// ========================================
-// STEP 3: Query di Verifica
-// ========================================
-
-// Conta i nodi per tipo
-MATCH (n)
-RETURN labels(n) AS NodeType, count(n) AS Count
-ORDER BY Count DESC;
-
-// Verifica le relazioni
-MATCH ()-[r]->()
-RETURN type(r) AS RelationType, count(r) AS Count
-ORDER BY Count DESC;

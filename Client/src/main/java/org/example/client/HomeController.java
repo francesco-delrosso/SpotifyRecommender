@@ -4,7 +4,13 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class HomeController {
     @FXML private TableView<Song> songTable;
@@ -22,6 +28,7 @@ public class HomeController {
     private int currentPage = 0;
     private static final int PAGE_SIZE = 20;
     private String userId;
+    private static String userEmail;
 
 
     public void initialize() {
@@ -34,6 +41,16 @@ public class HomeController {
         songTable.setItems(songs);
         loadSongs();
     }
+
+    private String currentUserEmail;
+
+    public void setUserEmail(String email) {
+        this.currentUserEmail = email;
+        userEmailLabel.setText(email);
+    }
+
+
+
 
     @FXML
     private void handleSearch() {
@@ -101,6 +118,60 @@ public class HomeController {
         }
     }
 
+
+    @FXML
+    private Label userEmailLabel;
+
+    @FXML
+    private void handleGoToFriendsSearch() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-search-view.fxml"));
+            Parent root = loader.load();
+
+            FriendsSearchController controller = loader.getController();
+            controller.setUserEmail(this.currentUserEmail); // Passa l'email
+            controller.loadInitialData(); // Carica i dati
+
+            Stage stage = (Stage) songTable.getScene().getWindow();
+            stage.setScene(new Scene(root, 1000, 700));
+        } catch (IOException e) {
+            showError("Errore nel caricamento della pagina: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleGoToFriendRequests() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("friend-requests-view.fxml"));
+            Parent root = loader.load();
+
+            FriendRequestsController controller = loader.getController();
+            controller.setUserEmail(this.currentUserEmail); // Passa l'email
+            controller.loadInitialData(); // Carica i dati
+
+            Stage stage = (Stage) songTable.getScene().getWindow();
+            stage.setScene(new Scene(root, 1000, 700));
+        } catch (IOException e) {
+            showError("Errore nel caricamento della pagina: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleLogout() {
+        try {
+            clientService.disconnect();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) songTable.getScene().getWindow();
+            stage.setScene(new Scene(root, 400, 500));
+            stage.setTitle("Login - Spotify Recommender");
+        } catch (IOException e) {
+            showError("Errore durante il logout: " + e.getMessage());
+        }
+    }
+
     private void updatePageLabel() {
         pageLabel.setText("Pagina " + (currentPage + 1));
     }
@@ -115,9 +186,6 @@ public class HomeController {
         alert.setTitle("Errore");
         alert.setContentText(message);
         alert.showAndWait();
-    }
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public void setClientService(ClientService service) {

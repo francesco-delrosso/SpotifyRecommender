@@ -91,14 +91,16 @@ public class LoginController {
         }
     }
 
+
     private void navigateToHome(String userId) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
             Parent root = loader.load();
 
+            // Ottieni il controller DOPO aver caricato l'FXML
             HomeController homeController = loader.getController();
-            homeController.setUserId(userId);
             homeController.setClientService(clientService);
+            homeController.setUserEmail(loginEmail.getText().trim()); // Passa l'email qui
 
             Stage stage = (Stage) loginEmail.getScene().getWindow();
             Scene scene = new Scene(root, 800, 600);
@@ -109,6 +111,7 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void showLoginPane() {
@@ -135,6 +138,7 @@ public class LoginController {
     }
 
     private void showError(String message) {
+        System.out.printf("Error: %s%n", message);
         statusLabel.setText("✗ " + message);
         statusLabel.setStyle("-fx-text-fill: red;");
     }

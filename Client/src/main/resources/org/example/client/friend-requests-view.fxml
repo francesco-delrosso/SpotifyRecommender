@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.FriendRequestsController"
+            style="-fx-background-color: #121212;">
+
+    <top>
+        <VBox style="-fx-background-color: #3498db; -fx-padding: 20;">
+            <Label text="📬 Richieste di Amicizia"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Gestisci le richieste di amicizia ricevute"
+                   style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
+                <VBox.margin>
+                    <Insets top="5"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;">
+
+            <HBox spacing="10" alignment="CENTER_RIGHT"
+                  style="-fx-background-color: #282828; -fx-background-radius: 10; -fx-padding: 15;">
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🔄 Aggiorna"
+                        onAction="#handleRefresh"
+                        style="-fx-background-color: #1DB954;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+            </HBox>
+
+            <ListView fx:id="requestsListView"
+                      VBox.vgrow="ALWAYS"
+                      style="-fx-background-color: #181818;
+                            -fx-control-inner-background: #181818;
+                            -fx-border-color: transparent;">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </ListView>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-background-color: #181818; -fx-padding: 20;">
+            <Button text="⬅ Torna alla Home"
+                    onAction="#handleBack"
+                    style="-fx-background-color: #282828;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 20;
+                           -fx-padding: 10 25;
+                           -fx-cursor: hand;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

@@ -8,15 +8,63 @@
 
     <!-- Header -->
     <top>
-        <VBox style="-fx-background-color: #1DB954; -fx-padding: 20;">
-            <Label text="Spotify Recommender"
-                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-            <Label text="Esplora migliaia di canzoni"
-                   style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
-                <VBox.margin>
-                    <Insets top="5"/>
-                </VBox.margin>
-            </Label>
+        <VBox>
+            <VBox style="-fx-background-color: #1DB954; -fx-padding: 20;">
+                <Label text="Spotify Recommender"
+                       style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <Label text="Esplora migliaia di canzoni"
+                       style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
+                    <VBox.margin>
+                        <Insets top="5"/>
+                    </VBox.margin>
+                </Label>
+            </VBox>
+
+            <!-- Navigation Bar -->
+            <HBox spacing="15"
+                  alignment="CENTER_LEFT"
+                  style="-fx-background-color: #282828; -fx-padding: 15 30;">
+
+                <Button text="🎵 Home"
+                        style="-fx-background-color: #1DB954;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+
+                <Button text="👥 Cerca Amici"
+                        onAction="#handleGoToFriendsSearch"
+                        style="-fx-background-color: #3498db;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+
+                <Button text="📬 Richieste Amicizia"
+                        onAction="#handleGoToFriendRequests"
+                        style="-fx-background-color: #9b59b6;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Label fx:id="userEmailLabel"
+                       style="-fx-text-fill: #b3b3b3; -fx-font-size: 12px;"/>
+
+                <Button text="🚪 Logout"
+                        onAction="#handleLogout"
+                        style="-fx-background-color: #e74c3c;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+            </HBox>
         </VBox>
     </top>
 
