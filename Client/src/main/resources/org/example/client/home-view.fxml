@@ -12,7 +12,7 @@
             <VBox style="-fx-background-color: #1DB954; -fx-padding: 20;">
                 <Label text="Spotify Recommender"
                        style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-                <Label text="Esplora migliaia di canzoni"
+                <Label text="Explore thousands of songs"
                        style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
                     <VBox.margin>
                         <Insets top="5"/>
@@ -33,7 +33,16 @@
                                -fx-padding: 8 20;
                                -fx-cursor: hand;"/>
 
-                <Button text="👥 Cerca Amici"
+                <Button text="❤️Favorites"
+                        onAction="#handleGoToFavorites"
+                        style="-fx-background-color: #e91e63;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+
+                <Button text="👥 Find Friends"
                         onAction="#handleGoToFriendsSearch"
                         style="-fx-background-color: #3498db;
                                -fx-text-fill: white;
@@ -42,7 +51,7 @@
                                -fx-padding: 8 20;
                                -fx-cursor: hand;"/>
 
-                <Button text="📬 Richieste Amicizia"
+                <Button text="📬 Friend Requests"
                         onAction="#handleGoToFriendRequests"
                         style="-fx-background-color: #9b59b6;
                                -fx-text-fill: white;
@@ -76,7 +85,7 @@
             <HBox spacing="10" alignment="CENTER"
                   style="-fx-background-color: #282828; -fx-background-radius: 25; -fx-padding: 10 20;">
                 <TextField fx:id="searchField"
-                           promptText="🔍 Cerca canzoni, artisti..."
+                           promptText="🔍 Search songs, artists..."
                            prefWidth="400"
                            onAction="#handleSearch"
                            style="-fx-background-color: transparent;
@@ -84,7 +93,7 @@
                                  -fx-prompt-text-fill: #b3b3b3;
                                  -fx-font-size: 14px;
                                  -fx-border-color: transparent;"/>
-                <Button text="Cerca"
+                <Button text="Search"
                         onAction="#handleSearch"
                         style="-fx-background-color: #1DB954;
                                -fx-text-fill: white;
@@ -102,16 +111,20 @@
                              -fx-table-cell-border-color: transparent;">
                 <columns>
                     <TableColumn fx:id="nameColumn"
-                                 text="🎵 Titolo"
-                                 prefWidth="300"
-                                 style="-fx-text-fill: white;"/>
-                    <TableColumn fx:id="artistColumn"
-                                 text="🎤 Artisti"
+                                 text="🎵 Title"
                                  prefWidth="250"
                                  style="-fx-text-fill: white;"/>
+                    <TableColumn fx:id="artistColumn"
+                                 text="🎤 Artists"
+                                 prefWidth="200"
+                                 style="-fx-text-fill: white;"/>
                     <TableColumn fx:id="popularityColumn"
-                                 text="⭐ Popolarità"
-                                 prefWidth="120"
+                                 text="⭐ Popularity"
+                                 prefWidth="100"
+                                 style="-fx-text-fill: white;"/>
+                    <TableColumn fx:id="favoriteColumn"
+                                 text="❤️"
+                                 prefWidth="80"
                                  style="-fx-text-fill: white;"/>
                 </columns>
                 <VBox.margin>
@@ -129,7 +142,7 @@
               style="-fx-background-color: #181818; -fx-padding: 20;">
 
             <Button fx:id="prevButton"
-                    text="⬅ Precedente"
+                    text="⬅ Previous"
                     onAction="#handlePrevious"
                     style="-fx-background-color: #282828;
                            -fx-text-fill: white;
@@ -139,14 +152,14 @@
                            -fx-cursor: hand;"/>
 
             <Label fx:id="pageLabel"
-                   text="Pagina 1"
+                   text="Page 1"
                    style="-fx-text-fill: white;
                           -fx-font-size: 14px;
                           -fx-font-weight: bold;
                           -fx-padding: 10 20;"/>
 
             <Button fx:id="nextButton"
-                    text="Successiva ➡"
+                    text="Next ➡"
                     onAction="#handleNext"
                     style="-fx-background-color: #1DB954;
                            -fx-text-fill: white;
