@@ -11,3 +11,105 @@
 2025-10-08 09:57:13.982+0000 INFO  name: system
 2025-10-08 09:57:13.982+0000 INFO  creationDate: 2025-10-08T09:57:12.878Z
 2025-10-08 09:57:13.983+0000 INFO  Started.
+2025-10-10 10:03:13.758+0000 INFO  Logging config in use: File '/var/lib/neo4j/conf/user-logs.xml'
+2025-10-10 10:03:13.766+0000 WARN  Use of deprecated setting 'dbms.directories.import'. It is replaced by 'server.directories.import'.
+2025-10-10 10:03:13.777+0000 INFO  Starting...
+2025-10-10 10:03:14.613+0000 INFO  This instance is ServerId{4b7db3a1} (4b7db3a1-9f6b-4291-88e5-fcc596615a0e)
+2025-10-10 10:03:15.763+0000 INFO  ======== Neo4j 2025.08.0 ========
+2025-10-10 10:05:08.447+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-10-10 10:05:20.565+0000 ERROR Failed to start Neo4j on 0.0.0.0:7474.
+java.lang.RuntimeException: Error starting Neo4j database server at /data/databases
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:293) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.build(DatabaseManagementServiceFactory.java:227) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.server.CommunityBootstrapper.createNeo(CommunityBootstrapper.java:39) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.server.NeoBootstrapper.start(NeoBootstrapper.java:192) [neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.server.NeoBootstrapper.start(NeoBootstrapper.java:102) [neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.server.Neo4jCommunity.main(Neo4jCommunity.java:30) [neo4j-2025.08.0.jar:2025.08.0]
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.dbms.database.DefaultSystemGraphInitializer@7e18ced7' was successfully initialized, but failed to start. Please see the attached cause exception "Log file contains entries with prefix 25, and the highest supported Kernel Version is KernelVersion{V2025_08,version=24}. This indicates that the log files originates from a newer version of neo4j, which we don't support downgrading from.".
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:364) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:91) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:284) ~[neo4j-2025.08.0.jar:2025.08.0]
+	... 5 more
+	Suppressed: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.dbms.database.DatabaseLifecycles$AllDatabaseStopper@49616310' failed to stop. Please see the attached cause exception "null".
+		at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.stop(LifeSupport.java:378) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.lifecycle.LifeSupport.stopInstances(LifeSupport.java:211) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.lifecycle.LifeSupport.stop(LifeSupport.java:119) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:96) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:284) ~[neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.build(DatabaseManagementServiceFactory.java:227) ~[neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.server.CommunityBootstrapper.createNeo(CommunityBootstrapper.java:39) ~[neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.server.NeoBootstrapper.start(NeoBootstrapper.java:192) [neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.server.NeoBootstrapper.start(NeoBootstrapper.java:102) [neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.server.Neo4jCommunity.main(Neo4jCommunity.java:30) [neo4j-2025.08.0.jar:2025.08.0]
+	Caused by: org.neo4j.dbms.systemgraph.SystemDatabaseProvider$SystemDatabaseUnavailableException
+		at org.neo4j.dbms.systemgraph.SystemDatabaseProvider.query(SystemDatabaseProvider.java:80) ~[neo4j-dbms-2025.08.0.jar:2025.08.0]
+		at org.neo4j.dbms.systemgraph.SystemDatabaseProvider.query(SystemDatabaseProvider.java:49) ~[neo4j-dbms-2025.08.0.jar:2025.08.0]
+		at org.neo4j.dbms.database.CommunityDatabaseObjectRepositoryModelProvider.withModel(CommunityDatabaseObjectRepositoryModelProvider.java:37) ~[neo4j-dbms-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.database.ModelBasedDatabaseIdRepository.getByName(ModelBasedDatabaseIdRepository.java:40) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.database.MapCachingDatabaseIdRepository.lambda$getByName$0(MapCachingDatabaseIdRepository.java:50) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+		at java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708) ~[?:?]
+		at org.neo4j.kernel.database.MapCachingDatabaseIdRepository.getByName(MapCachingDatabaseIdRepository.java:49) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.database.DatabaseIdRepository.getByName(DatabaseIdRepository.java:63) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		at org.neo4j.dbms.database.DatabaseRepository.getDatabaseContext(DatabaseRepository.java:54) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+		at org.neo4j.dbms.database.DatabaseLifecycles.defaultContext(DatabaseLifecycles.java:80) ~[neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.dbms.database.DatabaseLifecycles$AllDatabaseStopper.stop(DatabaseLifecycles.java:167) ~[neo4j-2025.08.0.jar:2025.08.0]
+		at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.stop(LifeSupport.java:374) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+		... 9 more
+Caused by: org.neo4j.graphdb.DatabaseShutdownException: This database is shutdown.
+	at org.neo4j.graphdb.DatabaseShutdownException.databaseUnavailable(DatabaseShutdownException.java:56) ~[neo4j-graphdb-api-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.availability.DatabaseAvailabilityGuard.assertDatabaseAvailable(DatabaseAvailabilityGuard.java:159) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacade.beginKernelTransaction(GraphDatabaseFacade.java:166) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacade.beginTransactionInternal(GraphDatabaseFacade.java:131) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacade.beginTransaction(GraphDatabaseFacade.java:96) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseTransactions.beginTransaction(GraphDatabaseTransactions.java:108) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseTransactions.beginTransaction(GraphDatabaseTransactions.java:102) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.internal.GraphDatabaseAPI.beginTransaction(GraphDatabaseAPI.java:69) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.factory.GraphDatabaseTransactions.beginTx(GraphDatabaseTransactions.java:92) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.SystemGraphComponents.initializeSystemGraph(SystemGraphComponents.java:85) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.DefaultSystemGraphInitializer.initializeSystemGraph(DefaultSystemGraphInitializer.java:38) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.SystemGraphInitializer.start(SystemGraphInitializer.java:27) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:347) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:91) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:284) ~[neo4j-2025.08.0.jar:2025.08.0]
+	... 5 more
+Caused by: java.lang.RuntimeException: org.neo4j.kernel.impl.transaction.log.entry.UnsupportedLogVersionException: Log file contains entries with prefix 25, and the highest supported Kernel Version is KernelVersion{V2025_08,version=24}. This indicates that the log files originates from a newer version of neo4j, which we don't support downgrading from.
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.DetachedLogTailScanner.findLogTail(DetachedLogTailScanner.java:153) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.DetachedLogTailScanner.getTailMetadata(DetachedLogTailScanner.java:591) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.CheckpointLogFile.getTailMetadata(CheckpointLogFile.java:302) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.TransactionLogFiles.getTailMetadata(TransactionLogFiles.java:92) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.Database.getLogTail(Database.java:686) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.Database.specificStart(Database.java:431) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.AbstractDatabase.start(AbstractDatabase.java:165) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.DatabaseLifecycles.startDatabase(DatabaseLifecycles.java:132) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.DatabaseLifecycles$SystemDatabaseStarter.start(DatabaseLifecycles.java:160) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:347) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:91) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:284) ~[neo4j-2025.08.0.jar:2025.08.0]
+	... 5 more
+Caused by: org.neo4j.kernel.impl.transaction.log.entry.UnsupportedLogVersionException: Log file contains entries with prefix 25, and the highest supported Kernel Version is KernelVersion{V2025_08,version=24}. This indicates that the log files originates from a newer version of neo4j, which we don't support downgrading from.
+	at org.neo4j.kernel.impl.transaction.log.entry.UnsupportedLogVersionException.unsupported(UnsupportedLogVersionException.java:57) ~[neo4j-wal-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.entry.VersionAwareLogEntryReader.updateParserSet(VersionAwareLogEntryReader.java:116) ~[neo4j-wal-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.entry.VersionAwareLogEntryReader.readLogEntry(VersionAwareLogEntryReader.java:72) ~[neo4j-wal-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.LogEntryCursor.next(LogEntryCursor.java:48) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.CheckpointLogFile.findLatestCheckpoint(CheckpointLogFile.java:162) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.CheckpointLogFile.findLatestCheckpoint(CheckpointLogFile.java:133) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.DetachedLogTailScanner.findLogTail(DetachedLogTailScanner.java:123) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.DetachedLogTailScanner.getTailMetadata(DetachedLogTailScanner.java:591) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.checkpoint.CheckpointLogFile.getTailMetadata(CheckpointLogFile.java:302) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.impl.transaction.log.files.TransactionLogFiles.getTailMetadata(TransactionLogFiles.java:92) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.Database.getLogTail(Database.java:686) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.Database.specificStart(Database.java:431) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.database.AbstractDatabase.start(AbstractDatabase.java:165) ~[neo4j-kernel-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.DatabaseLifecycles.startDatabase(DatabaseLifecycles.java:132) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.dbms.database.DatabaseLifecycles$SystemDatabaseStarter.start(DatabaseLifecycles.java:160) ~[neo4j-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:347) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:91) ~[neo4j-common-2025.08.0.jar:2025.08.0]
+	at org.neo4j.graphdb.facade.DatabaseManagementServiceFactory.startDatabaseServer(DatabaseManagementServiceFactory.java:284) ~[neo4j-2025.08.0.jar:2025.08.0]
+	... 5 more
+2025-10-10 10:05:20.569+0000 INFO  Neo4j Server shutdown initiated by request
+2025-10-10 10:05:20.570+0000 INFO  Stopped.
+2025-10-10 10:05:26.111+0000 INFO  Logging config in use: File '/var/lib/neo4j/conf/user-logs.xml'
+2025-10-10 10:05:26.118+0000 WARN  Use of deprecated setting 'dbms.directories.import'. It is replaced by 'server.directories.import'.
+2025-10-10 10:05:26.125+0000 INFO  Starting...
+2025-10-10 10:05:26.815+0000 INFO  This instance is ServerId{4b7db3a1} (4b7db3a1-9f6b-4291-88e5-fcc596615a0e)
+2025-10-10 10:05:27.634+0000 INFO  ======== Neo4j 2025.08.0 ========

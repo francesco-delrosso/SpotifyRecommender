@@ -11,8 +11,8 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 600);
-        stage.setTitle("Spotify Recommender - Client");
+        Scene scene = new Scene(fxmlLoader.load(), 600, 750);
+        stage.setTitle("Spotify Recommender");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
