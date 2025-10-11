@@ -112,11 +112,10 @@ public class LoginController {
 
     private void navigateToHome(String userId, String email) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/client/home-view.fxml"));
             Parent root = loader.load();
 
             HomeController homeController = loader.getController();
-            homeController.setClientService(clientService);
             homeController.setUserEmail(email);
 
             Stage stage = (Stage) loginEmail.getScene().getWindow();

@@ -2,6 +2,10 @@ package org.example.client;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.List;
+import org.example.client.Song;
 
 public class ClientService {
     private static final String SERVER_HOST = "localhost";
@@ -18,6 +22,28 @@ public class ClientService {
         out = new PrintWriter(socket.getOutputStream(), true);
         connected = true;
     }
+
+    // Aggiungi una canzone ai preferiti
+    public String addFavorite(String userEmail, String songId) throws IOException {
+        if (!connected) connect();
+        out.println("ADD_FAVORITE|" + userEmail + "|" + songId);
+        return in.readLine();
+    }
+
+    // Rimuovi una canzone dai preferiti
+    public String removeFavorite(String userEmail, String songId) throws IOException {
+        if (!connected) connect();
+        out.println("REMOVE_FAVORITE|" + userEmail + "|" + songId);
+        return in.readLine();
+    }
+
+    //  Ottieni la lista dei preferiti dell’utente
+    public String getFavorites(String userEmail) throws IOException {
+        if (!connected) connect();
+        out.println("GET_FAVORITES|" + userEmail);
+        return in.readLine();
+    }
+
 
     public String getSongs(int page, int pageSize) throws IOException {
         if (!connected) {

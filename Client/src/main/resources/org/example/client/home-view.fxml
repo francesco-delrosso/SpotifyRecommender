@@ -33,14 +33,15 @@
                                -fx-padding: 8 20;
                                -fx-cursor: hand;"/>
 
-                <Button text="❤️Favorites"
-                        onAction="#handleGoToFavorites"
-                        style="-fx-background-color: #e91e63;
-                               -fx-text-fill: white;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
+                <Button onAction="#handleGoToFavorites"
+                        style="-fx-background-color: transparent; -fx-padding: 0; -fx-font-size: 16px; -fx-text-fill: white; -fx-cursor: hand;">
+                    <graphic>
+                        <Label text="❤️ Favorites" style="-fx-font-size: 16px; -fx-text-fill: white;"/>
+                    </graphic>
+                </Button>
+
+
+
 
                 <Button text="👥 Find Friends"
                         onAction="#handleGoToFriendsSearch"
@@ -122,10 +123,14 @@
                                  text="⭐ Popularity"
                                  prefWidth="100"
                                  style="-fx-text-fill: white;"/>
-                    <TableColumn fx:id="favoriteColumn"
-                                 text="❤️"
-                                 prefWidth="80"
-                                 style="-fx-text-fill: white;"/>
+                    <TableColumn fx:id="favoriteColumn" prefWidth="60">
+                        <graphic>
+                            <Label text="❤️" style="-fx-font-size: 16px; -fx-text-fill: white;"/>
+                        </graphic>
+
+                </TableColumn>
+
+
                 </columns>
                 <VBox.margin>
                     <Insets top="10"/>
