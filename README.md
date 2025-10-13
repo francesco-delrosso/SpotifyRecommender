@@ -109,8 +109,7 @@ Run the following command from the project root to start the environment:
 ```bash
 docker compose up
 ```
-Connect to http://localhost:7474
-import the dataset to neo4j
+Connect to http://localhost:6666 and import the dataset.
 Run the server and the client.
 
 
