@@ -94,13 +94,14 @@ cd spotify-recommender
 Download the Spotify dataset from Kaggle:  
 🔗 [Spotify Tracks Dataset](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset)
 Put it in the "import" folder.
-
+```
 spotify-recommender/
 ├── client/
 ├── server/
 ├── import/
 │ └── spotify_dataset.csv
 └── docker-compose.yml
+```
 
 ### **🐳 4. Set up docker**
 
