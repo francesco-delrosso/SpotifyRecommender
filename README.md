@@ -109,7 +109,7 @@ Run the following command from the project root to start the environment:
 ```bash
 docker compose up
 ```
-Connect to http://localhost:7647 and import the dataset.
+Connect to http://localhost: and import the dataset.
 Run the server and the client.
 
 ## 👨‍💻 **Authors**
