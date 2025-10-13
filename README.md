@@ -89,6 +89,14 @@ git clone https://github.com/francesco-delrosso/SpotifyRecommender.git
 cd spotify-recommender
  ```
 
+download the dataset and put it in the import folder.
+Docker compose up
+Connect to http://localhost:7474
+import the dataset to neo4j
+Run the server and the client.
+
+
+
 ## 👨‍💻 **Authors**
 
 | Name |
