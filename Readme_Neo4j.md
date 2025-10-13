@@ -44,5 +44,3 @@ This query returns all songs liked by user Alice.
 | Fast queries on connections                     | Less suitable for purely tabular data                    |
 | Flexibility: add new nodes and relationships easily | Learning curve: Cypher and graph concepts require practice |
 
-
-## Queries with Cypher
