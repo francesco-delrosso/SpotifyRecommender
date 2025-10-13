@@ -129,9 +129,7 @@ Run the server and the client.
 ## 💬 **Future Improvements**
 
 - 🎶 Integration with the **Spotify API**  
-- 🧠 Machine Learning–based recommendation engine  
-- 🗂️ Database persistence for user profiles and favorites  
-- 🌈 Customizable UI themes and animations  
+- 🧠 Machine Learning–based recommendation engine   
 - 📊 Analytics for listening patterns  
 
 ---
