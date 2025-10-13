@@ -81,7 +81,7 @@ mvn -version
 docker -v
 ```
 
-### 🧰 **2. Running the program**
+### 🧰 **2. Clone the project**
 
 Clone the Repository.
  ```bash
@@ -89,8 +89,26 @@ git clone https://github.com/francesco-delrosso/SpotifyRecommender.git
 cd spotify-recommender
  ```
 
-download the dataset and put it in the import folder.
-Docker compose up
+### **3. Download the dataset**
+
+Download the Spotify dataset from Kaggle:  
+🔗 [Spotify Tracks Dataset](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset)
+Put it in the "import" folder.
+
+spotify-recommender/
+├── client/
+├── server/
+├── import/
+│ └── spotify_dataset.csv
+└── docker-compose.yml
+
+### **🐳 4. Set up docker**
+
+Run the following command from the project root to start the environment:
+
+```bash
+docker compose up
+
 Connect to http://localhost:7474
 import the dataset to neo4j
 Run the server and the client.
