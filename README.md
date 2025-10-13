@@ -78,7 +78,7 @@ You can verify installations with:
 java -version
 mvn -version
 docker -v
-
+```
 ## 👨‍💻 **Authors**
 
 | Name |
