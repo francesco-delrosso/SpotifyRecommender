@@ -58,15 +58,6 @@ By blending **collaborative filtering** (suggestions based on similar users) and
 
 ---
 
-## 🎨 **User Interface Highlights**
-
-✨ A clean and minimal design inspired by modern music platforms.  
-🟢 Interactive song table with clickable **⭐ favorite icons**.  
-🌓 Smooth transitions between **login**, **home**, and **friends** views.  
-📜 Pagination controls for handling large music datasets efficiently.  
-
----
-
 ## 👨‍💻 **Authors**
 
 | Name |
