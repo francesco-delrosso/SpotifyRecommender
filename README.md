@@ -58,6 +58,27 @@ By blending **collaborative filtering** (suggestions based on similar users) and
 
 ---
 
+## 🧩 **Installation and Setup Guide**
+
+Follow these steps to install and run **Spotify Recommender** from scratch.  
+These instructions allow any student to reproduce the demo independently.
+
+---
+
+### 🧰 **1. Prerequisites**
+
+Ensure the following tools are installed:
+
+- ☕ **Java JDK 21+**  
+- 🧱 **Maven 3.9+**  
+- 🐳 **Docker** and **Docker Compose**  
+
+You can verify installations with:
+```bash
+java -version
+mvn -version
+docker -v
+
 ## 👨‍💻 **Authors**
 
 | Name |
