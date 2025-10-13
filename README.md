@@ -50,7 +50,8 @@ By blending **collaborative filtering** (suggestions based on similar users) and
 ## 🖥️ **Technologies Used**
 
 - 🧩 **JavaFX** — for the interactive user interface  
-- 🔗 **Java RMI / Socket Communication** — for client-server interaction  
+- - 🧠 **Neo4j (Graph Database)** — for managing relationships between users, songs, and favorites  
+  > Neo4j allows the system to represent the music ecosystem as a **graph**, where users, songs, and friendships are interconnected nodes, enabling advanced **relationship-based recommendations**.  
 - 🧱 **FXML & CSS** — for structured and visually appealing UI design  
 - ⚙️ **Java Streams & Collections** — for efficient filtering and data management  
 - 🧰 **Maven** — for project build and dependency management  
