@@ -22,3 +22,18 @@ Each node can have **properties**, for example:
 ```cypher
 CREATE (u:User {username: 'Alice', age: 25})
 CREATE (s:Song {title: 'Imagine', artist: 'John Lennon'})
+```
+
+##Relationships
+
+Relationships connect nodes and can also have properties:
+
+(:User)-[:FRIEND]->(:User) → represents a friendship
+(:User)-[:LIKES]->(:Song) → represents a song saved as favorite
+```
+MATCH (u1:User {username: 'Alice'}), (u2:User {username: 'Bob'})
+CREATE (u1)-[:FRIEND]->(u2)
+```
+This query returns all songs liked by user Alice.
+
+##Queries with Cypher
