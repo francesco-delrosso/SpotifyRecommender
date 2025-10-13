@@ -5,7 +5,6 @@
 ### *Discover music you’ll love — powered by your friends and your favorites.*
 
 ![JavaFX](https://img.shields.io/badge/JavaFX-Application-blue?style=flat-square&logo=java)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
 ![Status](https://img.shields.io/badge/status-Active-success?style=flat-square)
 
 </div>
