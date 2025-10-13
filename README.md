@@ -52,7 +52,6 @@ By blending **collaborative filtering** (suggestions based on similar users) and
 - - 🧠 **Neo4j (Graph Database)** — for managing relationships between users, songs, and favorites  
   > Neo4j allows the system to represent the music ecosystem as a **graph**, where users, songs, and friendships are interconnected nodes, enabling advanced **relationship-based recommendations**.  
 - 🧱 **FXML & CSS** — for structured and visually appealing UI design  
-- ⚙️ **Java Streams & Collections** — for efficient filtering and data management  
 - 🧰 **Maven** — for project build and dependency management
 - 🐳 **Docker** — for easy setup and deployment of the server and Neo4j database  
   > Docker ensures a consistent, portable environment — you can spin up the backend and database in seconds using preconfigured containers.
@@ -70,7 +69,7 @@ These instructions allow any student to reproduce the demo independently.
 
 Ensure the following tools are installed:
 
-- ☕ **Java JDK 21+**  
+- ☕ **Java JDK 21**  
 - 🧱 **Maven 3.9+**  
 - 🐳 **Docker** and **Docker Compose**  
 
@@ -99,7 +98,7 @@ spotify-recommender/
 ├── client/
 ├── server/
 ├── import/
-│ └── spotify_dataset.csv
+│ └── dataset.csv
 └── docker-compose.yml
 ```
 
