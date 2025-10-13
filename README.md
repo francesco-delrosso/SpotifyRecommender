@@ -28,10 +28,8 @@ By blending **collaborative filtering** (suggestions based on similar users) and
 | 🎧 **Song Browsing** | Explore a rich catalog of songs, complete with details like title, artist, and popularity. |
 | ⭐ **Favorites System** | Add or remove tracks from your favorites list with a single click on a star icon. |
 | 🔍 **Smart Search** | Quickly find songs by name or artist. |
-| 👥 **Friend System** | Search for users, send and accept friend requests, and view your friends’ profiles. |
+| 👥 **Friend System** | Search for users, send and accept friend requests. |
 | 💡 **Social Recommendations** | Get song suggestions based on both your favorites and your friends’ favorite tracks. |
-| 🔐 **User Authentication** | Register, log in, and enjoy a personalized session experience. |
-| ↔️ **Pagination Support** | Seamlessly navigate large lists of songs using next and previous controls. |
 
 ---
 
@@ -54,7 +52,9 @@ By blending **collaborative filtering** (suggestions based on similar users) and
   > Neo4j allows the system to represent the music ecosystem as a **graph**, where users, songs, and friendships are interconnected nodes, enabling advanced **relationship-based recommendations**.  
 - 🧱 **FXML & CSS** — for structured and visually appealing UI design  
 - ⚙️ **Java Streams & Collections** — for efficient filtering and data management  
-- 🧰 **Maven** — for project build and dependency management  
+- 🧰 **Maven** — for project build and dependency management
+- 🐳 **Docker** — for easy setup and deployment of the server and Neo4j database  
+  > Docker ensures a consistent, portable environment — you can spin up the backend and database in seconds using preconfigured containers.
 
 ---
 
