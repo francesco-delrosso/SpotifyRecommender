@@ -112,8 +112,6 @@ docker compose up
 Connect to http://localhost:6666 and import the dataset.
 Run the server and the client.
 
-
-
 ## 👨‍💻 **Authors**
 
 | Name |
