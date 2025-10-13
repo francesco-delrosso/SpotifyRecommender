@@ -36,4 +36,13 @@ CREATE (u1)-[:FRIEND]->(u2)
 ```
 This query returns all songs liked by user Alice.
 
+# Advantages and Disadvantages of Neo4j
+
+| Advantages                                      | Disadvantages                                             |
+|-------------------------------------------------|----------------------------------------------------------|
+| Intuitive modeling of connected data           | Vertical scalability: may require powerful hardware      |
+| Fast queries on connections                     | Less suitable for purely tabular data                    |
+| Flexibility: add new nodes and relationships easily | Learning curve: Cypher and graph concepts require practice |
+
+
 ## Queries with Cypher
