@@ -85,7 +85,7 @@ docker -v
 
 Clone the Repository.
  ```bash
-git clone https://github.com/yourusername/spotify-recommender.git
+git clone https://github.com/francesco-delrosso/SpotifyRecommender.git
 cd spotify-recommender
  ```
 
