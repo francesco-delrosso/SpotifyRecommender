@@ -6,6 +6,7 @@
 
 ![JavaFX](https://img.shields.io/badge/JavaFX-Application-blue?style=flat-square&logo=java)
 ![Status](https://img.shields.io/badge/status-Active-success?style=flat-square)
+![Neo4j](https://img.shields.io/badge/Neo4j-Graph%20Database-green?style=flat-square&logo=neo4j)
 
 </div>
 
@@ -79,6 +80,15 @@ java -version
 mvn -version
 docker -v
 ```
+
+### 🧰 **2. Running the program**
+
+Clone the Repository.
+ ```bash
+git clone https://github.com/yourusername/spotify-recommender.git
+cd spotify-recommender
+ ```
+
 ## 👨‍💻 **Authors**
 
 | Name |
