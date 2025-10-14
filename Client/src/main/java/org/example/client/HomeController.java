@@ -71,15 +71,16 @@ public class HomeController {
             private final Label heartLabel = new Label();
 
             {
-                heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-cursor: hand;");
+                heartLabel.setStyle("-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 0; -fx-background-color: transparent;");
                 heartLabel.setOnMouseClicked(event -> {
                     Song song = getTableView().getItems().get(getIndex());
                     toggleFavorite(song);
-                    updateHeart(song);
                 });
 
-                heartLabel.setOnMouseEntered(event -> heartLabel.setScaleX(1.2));
-                heartLabel.setOnMouseEntered(event -> heartLabel.setScaleY(1.2));
+                heartLabel.setOnMouseEntered(event -> {
+                    heartLabel.setScaleX(1.2);
+                    heartLabel.setScaleY(1.2);
+                });
                 heartLabel.setOnMouseExited(event -> {
                     heartLabel.setScaleX(1.0);
                     heartLabel.setScaleY(1.0);
@@ -89,9 +90,13 @@ public class HomeController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
+
+                // Rimuovi ogni sfondo
+                setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                setGraphic(null);
+                setText(null);
+
+                if (!empty && getTableView().getItems().size() > getIndex()) {
                     Song song = getTableView().getItems().get(getIndex());
                     updateHeart(song);
                     setGraphic(heartLabel);
@@ -101,15 +106,17 @@ public class HomeController {
 
             private void updateHeart(Song song) {
                 if (song.IsFavorite()) {
-                    heartLabel.setText("\u2764"); // ❤️ pieno
-                    heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: red;");
+                    heartLabel.setText("❤");
+                    heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: #e74c3c; -fx-cursor: hand; -fx-padding: 0; -fx-background-color: transparent;");
                 } else {
-                    heartLabel.setText("\u2661"); // ♡ vuoto
-                    heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white;");
+                    heartLabel.setText("♡");
+                    heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-cursor: hand; -fx-padding: 0; -fx-background-color: transparent;");
                 }
             }
         });
     }
+
+
 
     /** Toggle preferito */
     private void toggleFavorite(Song song) {

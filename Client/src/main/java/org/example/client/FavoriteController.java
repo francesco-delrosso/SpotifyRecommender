@@ -48,10 +48,10 @@ public class FavoriteController {
 
     private void setupFavoriteColumn() {
         favoriteColumn.setCellFactory(column -> new TableCell<Song, Void>() {
-            private final Label heartLabel = new Label("❤️");
+            private final Label heartLabel = new Label("❤");
 
             {
-                heartLabel.setStyle("-fx-font-size: 18px; -fx-cursor: hand;");
+                heartLabel.setStyle("-fx-font-size: 20px; -fx-cursor: hand; -fx-text-fill: #e74c3c; -fx-background-color: transparent; -fx-padding: 0;");
                 heartLabel.setOnMouseClicked(event -> {
                     Song song = getTableView().getItems().get(getIndex());
                     removeFavorite(song);
@@ -61,15 +61,20 @@ public class FavoriteController {
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
+
+                setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                setGraphic(null);
+                setText(null);
+
+                if (!empty) {
                     setGraphic(heartLabel);
                     setAlignment(Pos.CENTER);
                 }
             }
         });
     }
+
+
 
     @FXML
     private void handleRefresh() {

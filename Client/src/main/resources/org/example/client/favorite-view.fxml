@@ -7,71 +7,83 @@
             style="-fx-background-color: #121212;">
 
     <top>
-        <VBox style="-fx-back ground-color: #e74c3c; -fx-padding: 20;">
-            <Label text="❤️My Favorites"
-                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label fx:id="userEmailLabel"
-                       style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;"/>
-                <Label text="•" style="-fx-text-fill: #f0f0f0;"/>
-                <Label fx:id="countLabel"
-                       text="0 songs"
-                       style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;"/>
-            </HBox>
-        </VBox>
-    </top>
+        <VBox>
+            <!-- Header principale -->
+            <VBox style="-fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b); -fx-padding: 30 40;">
+                <Label text="❤️ My Favorites"
+                       style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <VBox.margin>
+                        <Insets top="10"/>
+                    </VBox.margin>
+                    <Label fx:id="userEmailLabel"
+                           style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8);"/>
+                    <Label text="•" style="-fx-text-fill: rgba(255,255,255,0.6);"/>
+                    <Label fx:id="countLabel"
+                           text="0 songs"
+                           style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-weight: bold;"/>
+                </HBox>
+            </VBox>
 
-    <center>
-        <VBox spacing="20" style="-fx-padding: 30;">
-            <HBox spacing="10" alignment="CENTER_RIGHT"
-                  style="-fx-background-color: #282828; -fx-background-radius: 10; -fx-padding: 15;">
+            <!-- Barra azioni -->
+            <HBox spacing="15" alignment="CENTER_RIGHT"
+                  style="-fx-background-color: #1e1e1e; -fx-padding: 15 30;">
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button text="🔄 Refresh"
                         onAction="#handleRefresh"
                         style="-fx-background-color: #1DB954;
                                -fx-text-fill: white;
                                -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
+                               -fx-background-radius: 25;
+                               -fx-padding: 10 25;
+                               -fx-cursor: hand;
+                               -fx-effect: dropshadow(gaussian, rgba(29,185,84,0.4), 8, 0.3, 0, 2);"/>
             </HBox>
+        </VBox>
+    </top>
 
+    <center>
+        <VBox style="-fx-padding: 30;">
             <TableView fx:id="favoriteTable"
                        VBox.vgrow="ALWAYS"
                        style="-fx-background-color: #181818;
+                             -fx-background-radius: 15;
                              -fx-control-inner-background: #181818;
-                             -fx-table-cell-border-color: transparent;">
+                             -fx-table-cell-border-color: transparent;
+                             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0.2, 0, 3);">
                 <columns>
                     <TableColumn fx:id="titleColumn"
                                  text="🎵 Title"
-                                 prefWidth="250"/>
+                                 prefWidth="300"
+                                 style="-fx-alignment: CENTER-LEFT;"/>
                     <TableColumn fx:id="artistColumn"
                                  text="🎤 Artists"
-                                 prefWidth="200"/>
+                                 prefWidth="250"
+                                 style="-fx-alignment: CENTER-LEFT;"/>
                     <TableColumn fx:id="popularityColumn"
                                  text="⭐ Popularity"
-                                 prefWidth="100"/>
+                                 prefWidth="120"
+                                 style="-fx-alignment: CENTER;"/>
                     <TableColumn fx:id="favoriteColumn"
-                                 prefWidth="60">
-                        <graphic>
-                            <Label text="❤️" style="-fx-font-size: 16px;"/>
-                        </graphic>
-                    </TableColumn>
+                                 text="❤"
+                                 prefWidth="80"
+                                 style="-fx-alignment: CENTER;"/>
                 </columns>
             </TableView>
         </VBox>
     </center>
 
     <bottom>
-        <HBox alignment="CENTER" style="-fx-background-color: #181818; -fx-padding: 20;">
+        <HBox alignment="CENTER" style="-fx-background-color: #1e1e1e; -fx-padding: 25;">
             <Button text="⬅ Back to Home"
                     onAction="#handleBackToHome"
                     style="-fx-background-color: #282828;
                            -fx-text-fill: white;
                            -fx-font-weight: bold;
-                           -fx-background-radius: 20;
-                           -fx-padding: 10 25;
-                           -fx-cursor: hand;"/>
+                           -fx-background-radius: 25;
+                           -fx-padding: 12 30;
+                           -fx-cursor: hand;
+                           -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.2, 0, 2);"/>
         </HBox>
     </bottom>
 
