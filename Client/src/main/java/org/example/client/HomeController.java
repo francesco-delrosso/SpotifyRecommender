@@ -128,10 +128,13 @@ public class HomeController {
             } else {
                 clientService.removeFavorite(currentUserEmail, song.getId());
             }
+            // Ricarica la tabella per aggiornare i cuori
+            loadSongs();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     /** Caricamento canzoni (paginato e robusto) */
     private void loadSongs() {
@@ -139,31 +142,26 @@ public class HomeController {
             String response = clientService.getSongs(currentPage, PAGE_SIZE);
             songs.clear();
 
+            // Carica gli ID dei preferiti dell'utente
+            List<String> favoriteIds = loadFavoriteIds();
+
             if (response != null && response.startsWith("SONGS|")) {
-                // Rimuovi il prefisso "SONGS|"
-                String songsData = response.substring(6);
-
-                if (!songsData.isEmpty()) {
-                    String[] entries = songsData.split("\\|");
-
-                    // Carica i preferiti una sola volta
-                    List<String> favoriteIds = loadFavoriteIds();
-
-                    for (String entry : entries) {
-                        String[] fields = entry.split(";");
-                        if (fields.length >= 5) {
-                            Song s = new Song(
-                                    fields[0],
-                                    fields[1],
-                                    fields[2],
-                                    Integer.parseInt(fields[3]),
-                                    Integer.parseInt(fields[4])
-                            );
-
-                            // Imposta se è preferito
-                            s.setIsFavorite(favoriteIds.contains(s.getId()));
-                            songs.add(s);
+                String[] parts = response.split("\\|");
+                for (int i = 1; i < parts.length; i++) {
+                    String[] fields = parts[i].split(";");
+                    if (fields.length >= 5) {
+                        Song song = new Song(
+                                fields[0], // id
+                                fields[1], // name
+                                fields[2], // artists
+                                Integer.parseInt(fields[3]), // popularity
+                                Integer.parseInt(fields[4])  // duration
+                        );
+                        // Se l'ID è tra i preferiti, segna il cuore
+                        if (favoriteIds.contains(fields[0])) {
+                            song.setIsFavorite(true);
                         }
+                        songs.add(song);
                     }
                 }
             }
@@ -177,24 +175,28 @@ public class HomeController {
             showError("Errore nel caricamento delle canzoni");
         }
     }
+
     private List<String> loadFavoriteIds() {
         List<String> favoriteIds = new ArrayList<>();
         try {
-            String favResponse = clientService.getFavorites(currentUserEmail);
-            if (favResponse != null && !favResponse.isEmpty()) {
-                String[] favorites = favResponse.split("\\|");
+            String response = clientService.getFavorites(currentUserEmail);
+            if (response != null && !response.equals("EMPTY") && !response.startsWith("ERROR")) {
+                String[] favorites = response.split("\\|");
                 for (String fav : favorites) {
-                    String[] fields = fav.split(";");
-                    if (fields.length > 0) {
-                        favoriteIds.add(fields[0]);
+                    if (!fav.isEmpty()) {
+                        String[] fields = fav.split(";");
+                        if (fields.length >= 1) {
+                            favoriteIds.add(fields[0]);
+                        }
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // Ignora errori, restituisce lista vuota
         }
         return favoriteIds;
     }
+
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Errore");

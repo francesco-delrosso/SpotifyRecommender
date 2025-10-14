@@ -39,6 +39,28 @@
                                -fx-cursor: hand;
                                -fx-effect: dropshadow(gaussian, rgba(29,185,84,0.4), 8, 0.3, 0, 2);"/>
             </HBox>
+
+            <!-- Search Bar -->
+            <HBox spacing="10" alignment="CENTER"
+                  style="-fx-background-color: #282828; -fx-background-radius: 25; -fx-padding: 10 20;">
+                <TextField fx:id="searchField"
+                           promptText="🔍 Search songs, artists..."
+                           prefWidth="400"
+                           onAction="#handleSearchFavorites"
+                           style="-fx-background-color: transparent;
+                                 -fx-text-fill: white;
+                                 -fx-prompt-text-fill: #b3b3b3;
+                                 -fx-font-size: 14px;
+                                 -fx-border-color: transparent;"/>
+                <Button text="Search"
+                        onAction="#handleSearchFavorites"
+                        style="-fx-background-color: #1DB954;
+                               -fx-text-fill: white;
+                               -fx-font-weight: bold;
+                               -fx-background-radius: 20;
+                               -fx-padding: 8 20;
+                               -fx-cursor: hand;"/>
+            </HBox>
         </VBox>
     </top>
 

@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class FavoriteController {
 
@@ -23,8 +25,10 @@ public class FavoriteController {
     @FXML private TableColumn<Song, Void> favoriteColumn;
     @FXML private Label userEmailLabel;
     @FXML private Label countLabel;
+    @FXML private TextField searchField;
 
     private ClientService clientService;
+    private int currentPage = 0;
     private String userEmail;
     private ObservableList<Song> favoriteSongs;
 
@@ -166,4 +170,67 @@ public class FavoriteController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-}
+    //for the search bar
+    private void searchSongsFavorite(String searchTerm) {
+        new Thread(() -> {
+            try {
+                String response = clientService.getFavorites(userEmail); // Prendi solo i preferiti
+
+                Platform.runLater(() -> {
+                    favoriteSongs.clear();
+
+                    if (response != null && !response.equals("EMPTY") && !response.startsWith("ERROR")) {
+                        String[] favorites = response.split("\\|");
+
+                        for (String fav : favorites) {
+                            if (!fav.isEmpty()) {
+                                String[] fields = fav.split(";");
+                                if (fields.length >= 5) {
+                                    String name = fields[1].toLowerCase();
+                                    String artists = fields[2].toLowerCase();
+                                    if (name.contains(searchTerm.toLowerCase()) || artists.contains(searchTerm.toLowerCase())) {
+                                        try {
+                                            Song song = new Song(
+                                                    fields[0],  // id
+                                                    fields[1],  // name
+                                                    fields[2],  // artists
+                                                    Integer.parseInt(fields[3]),  // popularity
+                                                    Integer.parseInt(fields[4])   // duration_ms
+                                            );
+                                            song.setIsFavorite(true);
+                                            favoriteSongs.add(song);
+                                        } catch (NumberFormatException e) {
+                                            System.err.println("Errore parsing: " + fav);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    countLabel.setText(favoriteSongs.size() + " songs");
+
+                    if (favoriteSongs.isEmpty()) {
+                        System.out.println("Nessuna canzone trovata per: " + searchTerm);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> showError("Errore nella ricerca: " + e.getMessage()));
+            }
+        }).start();
+    }
+
+    @FXML
+    private void handleSearchFavorites() {
+            currentPage = 0;
+            String term = searchField.getText().trim();
+
+            if (term.isEmpty()) {
+                loadFavorites();
+            } else {
+                searchSongsFavorite(term);
+            }
+        }
+    }
