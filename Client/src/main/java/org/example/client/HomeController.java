@@ -71,7 +71,7 @@ public class HomeController {
             private final Label heartLabel = new Label();
 
             {
-                heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-background-color: transparent;");
+                heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-cursor: hand;");
                 heartLabel.setOnMouseClicked(event -> {
                     Song song = getTableView().getItems().get(getIndex());
                     toggleFavorite(song);
@@ -132,28 +132,32 @@ public class HomeController {
             String response = clientService.getSongs(currentPage, PAGE_SIZE);
             songs.clear();
 
-            if (response != null && !response.isEmpty() && !response.equals("EMPTY")) {
-                String[] entries = response.split("\\|");
-                for (String entry : entries) {
-                    String[] fields = entry.split(";");
-                    if (fields.length < 5) continue; // ignora entry malformate
+            if (response != null && response.startsWith("SONGS|")) {
+                // Rimuovi il prefisso "SONGS|"
+                String songsData = response.substring(6);
 
-                    Song s = new Song(fields[0], fields[1], fields[2],
-                            Integer.parseInt(fields[3]), Integer.parseInt(fields[4]));
+                if (!songsData.isEmpty()) {
+                    String[] entries = songsData.split("\\|");
 
-                    // sincronizza con preferiti dal DB
-                    String favResponse = clientService.getFavorites(currentUserEmail);
-                    if (favResponse != null && !favResponse.isEmpty() && !favResponse.equals("EMPTY")) {
-                        for (String fav : favResponse.split("\\|")) {
-                            String favId = fav.split(";")[0];
-                            if (s.getId().equals(favId)) {
-                                s.setIsFavorite(true);
-                                break;
-                            }
+                    // Carica i preferiti una sola volta
+                    List<String> favoriteIds = loadFavoriteIds();
+
+                    for (String entry : entries) {
+                        String[] fields = entry.split(";");
+                        if (fields.length >= 5) {
+                            Song s = new Song(
+                                    fields[0],
+                                    fields[1],
+                                    fields[2],
+                                    Integer.parseInt(fields[3]),
+                                    Integer.parseInt(fields[4])
+                            );
+
+                            // Imposta se è preferito
+                            s.setIsFavorite(favoriteIds.contains(s.getId()));
+                            songs.add(s);
                         }
                     }
-
-                    songs.add(s);
                 }
             }
 
@@ -163,8 +167,37 @@ public class HomeController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            showError("Errore nel caricamento delle canzoni");
         }
     }
+    private List<String> loadFavoriteIds() {
+        List<String> favoriteIds = new ArrayList<>();
+        try {
+            String favResponse = clientService.getFavorites(currentUserEmail);
+            if (favResponse != null && !favResponse.isEmpty()) {
+                String[] favorites = favResponse.split("\\|");
+                for (String fav : favorites) {
+                    String[] fields = fav.split(";");
+                    if (fields.length > 0) {
+                        favoriteIds.add(fields[0]);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return favoriteIds;
+    }
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
+
 
     /** Pulsanti Next/Previous */
     private void updateButtons() {
@@ -206,28 +239,28 @@ public class HomeController {
             String response = clientService.searchSongs(term, currentPage, PAGE_SIZE);
             songs.clear();
 
-            if (response != null && !response.isEmpty() && !response.equals("EMPTY")) {
-                String[] entries = response.split("\\|");
-                for (String entry : entries) {
-                    String[] fields = entry.split(";");
-                    if (fields.length < 5) continue;
+            if (response != null && response.startsWith("SONGS|")) {
+                String songsData = response.substring(6);
 
-                    Song s = new Song(fields[0], fields[1], fields[2],
-                            Integer.parseInt(fields[3]), Integer.parseInt(fields[4]));
+                if (!songsData.isEmpty()) {
+                    String[] entries = songsData.split("\\|");
+                    List<String> favoriteIds = loadFavoriteIds();
 
-                    // sincronizza con preferiti
-                    String favResponse = clientService.getFavorites(currentUserEmail);
-                    if (favResponse != null && !favResponse.isEmpty() && !favResponse.equals("EMPTY")) {
-                        for (String fav : favResponse.split("\\|")) {
-                            String favId = fav.split(";")[0];
-                            if (s.getId().equals(favId)) {
-                                s.setIsFavorite(true);
-                                break;
-                            }
+                    for (String entry : entries) {
+                        String[] fields = entry.split(";");
+                        if (fields.length >= 5) {
+                            Song s = new Song(
+                                    fields[0],
+                                    fields[1],
+                                    fields[2],
+                                    Integer.parseInt(fields[3]),
+                                    Integer.parseInt(fields[4])
+                            );
+
+                            s.setIsFavorite(favoriteIds.contains(s.getId()));
+                            songs.add(s);
                         }
                     }
-
-                    songs.add(s);
                 }
             }
 
@@ -237,8 +270,10 @@ public class HomeController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            showError("Errore nella ricerca");
         }
     }
+
 
     /** Vai alla pagina dei preferiti */
     @FXML
@@ -251,7 +286,7 @@ public class HomeController {
             controller.setUserData(currentUserEmail, clientService);
 
             Stage stage = (Stage) songTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1000, 700));
         } catch (IOException e) {
             e.printStackTrace();
         }

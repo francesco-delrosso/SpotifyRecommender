@@ -11,3 +11,29 @@
 2025-10-10 11:25:38.933+0000 INFO  name: system
 2025-10-10 11:25:38.934+0000 INFO  creationDate: 2025-10-10T11:25:21.437Z
 2025-10-10 11:25:38.935+0000 INFO  Started.
+2025-10-13 23:16:32.655+0000 INFO  Logging config in use: File '/var/lib/neo4j/conf/user-logs.xml'
+2025-10-13 23:16:32.682+0000 WARN  Use of deprecated setting 'dbms.directories.import'. It is replaced by 'server.directories.import'.
+2025-10-13 23:16:32.707+0000 INFO  Starting...
+2025-10-13 23:16:34.944+0000 INFO  This instance is ServerId{1f5d498e} (1f5d498e-61e8-4099-b7e2-230d214bf18e)
+2025-10-13 23:16:36.996+0000 INFO  ======== Neo4j 2025.09.0 ========
+2025-10-13 23:16:42.339+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-10-13 23:16:45.685+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-10-13 23:16:46.708+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-10-13 23:16:46.711+0000 INFO  Remote interface available at http://localhost:7474/
+2025-10-13 23:16:46.716+0000 INFO  id: 8F245E94A7B2B705991AAA201B026BC570C976D842DE99A2A518361057B6FB58
+2025-10-13 23:16:46.718+0000 INFO  name: system
+2025-10-13 23:16:46.719+0000 INFO  creationDate: 2025-10-10T11:25:21.437Z
+2025-10-13 23:16:46.721+0000 INFO  Started.
+2025-10-14 14:59:57.946+0000 INFO  Logging config in use: File '/var/lib/neo4j/conf/user-logs.xml'
+2025-10-14 14:59:57.959+0000 WARN  Use of deprecated setting 'dbms.directories.import'. It is replaced by 'server.directories.import'.
+2025-10-14 14:59:57.980+0000 INFO  Starting...
+2025-10-14 14:59:59.397+0000 INFO  This instance is ServerId{1f5d498e} (1f5d498e-61e8-4099-b7e2-230d214bf18e)
+2025-10-14 15:00:01.138+0000 INFO  ======== Neo4j 2025.09.0 ========
+2025-10-14 15:00:05.932+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-10-14 15:00:12.263+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-10-14 15:00:13.935+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-10-14 15:00:13.939+0000 INFO  Remote interface available at http://localhost:7474/
+2025-10-14 15:00:13.945+0000 INFO  id: 8F245E94A7B2B705991AAA201B026BC570C976D842DE99A2A518361057B6FB58
+2025-10-14 15:00:13.948+0000 INFO  name: system
+2025-10-14 15:00:13.949+0000 INFO  creationDate: 2025-10-10T11:25:21.437Z
+2025-10-14 15:00:13.951+0000 INFO  Started.

@@ -1,31 +1,24 @@
 package org.example;
 
-import org.example.client.Song;  // Assicurati che la classe Song sia nel package common
 import org.neo4j.driver.*;
-import org.neo4j.driver.Record;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FavoriteService {
-
     private final Driver driver;
 
     public FavoriteService(Driver driver) {
         this.driver = driver;
     }
 
-    /**
-     * Aggiunge una canzone ai preferiti di un utente
-     */
     public boolean addFavorite(String email, String songId) {
         try (Session session = driver.session()) {
-            String query = """
-                MATCH (u:User {email: $email}), (s:Song {id: $id})
-                MERGE (u)-[:LIKES]->(s)
-            """;
-            session.run(query, Map.of("email", email, "id", songId));
+            session.executeWrite(tx -> {
+                tx.run("MATCH (u:User {email: $email}), (s:Song {songId: $songId}) " +
+                                "MERGE (u)-[:FAVORITES]->(s)",
+                        Values.parameters("email", email, "songId", songId));
+                return null;
+            });
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,16 +26,14 @@ public class FavoriteService {
         }
     }
 
-    /**
-     * Rimuove una canzone dai preferiti di un utente
-     */
     public boolean removeFavorite(String email, String songId) {
         try (Session session = driver.session()) {
-            String query = """
-                MATCH (u:User {email: $email})-[r:LIKES]->(s:Song {id: $id})
-                DELETE r
-            """;
-            session.run(query, Map.of("email", email, "id", songId));
+            session.executeWrite(tx -> {
+                tx.run("MATCH (u:User {email: $email})-[r:FAVORITES]->(s:Song {songId: $songId}) " +
+                                "DELETE r",
+                        Values.parameters("email", email, "songId", songId));
+                return null;
+            });
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,38 +41,66 @@ public class FavoriteService {
         }
     }
 
-    /**
-     * Restituisce tutte le canzoni preferite di un utente
-     */
-    public List<Song> getFavorites(String email) {
-        List<Song> favorites = new ArrayList<>();
-
+    public List<FavoriteSong> getFavorites(String email) {
         try (Session session = driver.session()) {
-            String query = """
-            MATCH (u:User {email: $email})-[:LIKES]->(s:Song)
-            RETURN s.id AS id, s.name AS name, s.artists AS artists, s.popularity AS popularity
-        """;
+            return session.executeRead(tx -> {
+                Result result = tx.run(
+                        "MATCH (u:User {email: $email})-[:FAVORITES]->(s:Song) " +
+                                "RETURN s.songId AS id, s.trackName AS name, " +
+                                "s.artists AS artists, s.popularity AS popularity, " +
+                                "s.duration_ms AS duration",
+                        Values.parameters("email", email)
+                );
 
-            Result result = session.run(query, Map.of("email", email));
+                List<FavoriteSong> favorites = new ArrayList<>();
+                while (result.hasNext()) {
+                    org.neo4j.driver.Record record = result.next();
 
-            while (result.hasNext()) {
-                Record record = result.next();
+                    // Gestisci il caso in cui artists sia una lista
+                    String artistsStr = "";
+                    try {
+                        var artistsValue = record.get("artists");
+                        if (!artistsValue.isNull()) {
+                            artistsStr = artistsValue.asString();
+                        }
+                    } catch (Exception e) {
+                        artistsStr = "Unknown";
+                    }
 
-                // Usa .asString() e .asInt() con default values sicuri
-                String id = record.get("id").isNull() ? "" : record.get("id").asString();
-                String name = record.get("name").isNull() ? "" : record.get("name").asString();
-                String artists = record.get("artists").isNull() ? "" : record.get("artists").asString();
-                int popularity = record.get("popularity").isNull() ? 0 : record.get("popularity").asInt();
-                int duration = record.get("duration_ms").isNull() ? 0 : record.get("duration_ms").asInt();
-
-                favorites.add(new Song(id, name, artists, popularity,duration));
-            }
-
+                    favorites.add(new FavoriteSong(
+                            record.get("id").asString(),
+                            record.get("name").asString(),
+                            artistsStr,
+                            record.get("popularity").asInt(),
+                            record.get("duration").asInt()
+                    ));
+                }
+                return favorites;
+            });
         } catch (Exception e) {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-
-        return favorites;
     }
 
+
+    public static class FavoriteSong {
+        private String id;
+        private String name;
+        private String artists;
+        private int popularity;
+        private int duration;
+
+        public FavoriteSong(String id, String name, String artists, int popularity, int duration) {
+            this.id = id;
+            this.name = name;
+            this.artists = artists;
+            this.popularity = popularity;
+            this.duration = duration;
+        }
+
+        public String toProtocolString() {
+            return id + ";" + name + ";" + artists + ";" + popularity + ";" + duration;
+        }
+    }
 }

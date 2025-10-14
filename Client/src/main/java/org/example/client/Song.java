@@ -26,6 +26,9 @@ public class Song {
     public StringProperty artistsProperty() {
         return artists;
     }
+    public IntegerProperty durationProperty() {
+        return duration;
+    }
 
     public IntegerProperty popularityProperty() {
         return popularity;

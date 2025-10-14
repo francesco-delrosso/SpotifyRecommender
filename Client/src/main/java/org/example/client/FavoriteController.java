@@ -1,15 +1,16 @@
 package org.example.client;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.geometry.Pos;
 
 import java.io.IOException;
 
@@ -21,37 +22,37 @@ public class FavoriteController {
     @FXML private TableColumn<Song, Integer> popularityColumn;
     @FXML private TableColumn<Song, Void> favoriteColumn;
     @FXML private Label userEmailLabel;
+    @FXML private Label countLabel;
 
-    private final ObservableList<Song> favorites = FXCollections.observableArrayList();
     private ClientService clientService;
-    private String currentUserEmail;
+    private String userEmail;
+    private ObservableList<Song> favoriteSongs;
 
-    // 🔹 Metodo richiamato dalla Home
+    public void initialize() {
+        favoriteSongs = FXCollections.observableArrayList();
+
+        titleColumn.setCellValueFactory(data -> data.getValue().nameProperty());
+        artistColumn.setCellValueFactory(data -> data.getValue().artistsProperty());
+        popularityColumn.setCellValueFactory(data -> data.getValue().popularityProperty().asObject());
+
+        setupFavoriteColumn();
+        favoriteTable.setItems(favoriteSongs);
+    }
+
     public void setUserData(String email, ClientService service) {
-        this.currentUserEmail = email;
+        this.userEmail = email;
         this.clientService = service;
-        userEmailLabel.setText(email);
+        this.userEmailLabel.setText("👤 " + email);
         loadFavorites();
     }
 
-    @FXML
-    private void initialize() {
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artists"));
-        popularityColumn.setCellValueFactory(new PropertyValueFactory<>("popularity"));
-        setupFavoriteColumn();
-        favoriteTable.setItems(favorites);
-    }
-
     private void setupFavoriteColumn() {
-        favoriteColumn.setCellFactory(column -> new TableCell<>() {
+        favoriteColumn.setCellFactory(column -> new TableCell<Song, Void>() {
             private final Label heartLabel = new Label("❤️");
 
             {
-                heartLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: red; -fx-cursor: hand;");
-                heartLabel.setOnMouseEntered(e -> heartLabel.setScaleX(1.2));
-                heartLabel.setOnMouseExited(e -> heartLabel.setScaleX(1.0));
-                heartLabel.setOnMouseClicked(e -> {
+                heartLabel.setStyle("-fx-font-size: 18px; -fx-cursor: hand;");
+                heartLabel.setOnMouseClicked(event -> {
                     Song song = getTableView().getItems().get(getIndex());
                     removeFavorite(song);
                 });
@@ -70,55 +71,94 @@ public class FavoriteController {
         });
     }
 
-    private void loadFavorites() {
-        favorites.clear();
-        try {
-            String response = clientService.getFavorites(currentUserEmail);
-            if (response != null && !response.equals("EMPTY")) {
-                String[] entries = response.split("\\|");
-                for (String entry : entries) {
-                    String[] fields = entry.split(";");
-                    if (fields.length >= 4) {
-                        Song song = new Song(
-                                fields[0],
-                                fields[1],
-                                fields[2],
-                                Integer.parseInt(fields[3]),
-                                0
-                        );
-                        song.setIsFavorite(true);
-                        favorites.add(song);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void removeFavorite(Song song) {
-        try {
-            clientService.removeFavorite(currentUserEmail, song.getId());
-            favorites.remove(song);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML
+    private void handleRefresh() {
+        loadFavorites();
     }
 
     @FXML
     private void handleBackToHome() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-            BorderPane homeRoot = loader.load();
+            Parent root = loader.load();
 
-            HomeController homeController = loader.getController();
-            homeController.setUserEmail(currentUserEmail);
-            homeController.setClientService(clientService);
+            HomeController controller = loader.getController();
+            controller.setUserEmail(this.userEmail);
 
             Stage stage = (Stage) favoriteTable.getScene().getWindow();
-            stage.setScene(new Scene(homeRoot, 1000, 700));
+            stage.setScene(new Scene(root, 1000, 700));
         } catch (IOException e) {
-            e.printStackTrace();
+            showError("Errore nel tornare alla home");
         }
+    }
+
+    private void loadFavorites() {
+        new Thread(() -> {
+            try {
+                String response = clientService.getFavorites(userEmail);
+
+                Platform.runLater(() -> {
+                    favoriteSongs.clear();
+
+                    if (response != null && !response.equals("EMPTY") && !response.startsWith("ERROR")) {
+                        String[] favorites = response.split("\\|");
+
+                        for (String fav : favorites) {
+                            if (!fav.isEmpty()) {
+                                String[] fields = fav.split(";");
+                                if (fields.length >= 5) {
+                                    try {
+                                        Song song = new Song(
+                                                fields[0],  // id
+                                                fields[1],  // name
+                                                fields[2],  // artists
+                                                Integer.parseInt(fields[3]),  // popularity
+                                                Integer.parseInt(fields[4])   // duration_ms
+                                        );
+                                        song.setIsFavorite(true);
+                                        favoriteSongs.add(song);
+                                    } catch (NumberFormatException e) {
+                                        System.err.println("Errore parsing: " + fav);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    countLabel.setText(favoriteSongs.size() + " songs");
+
+                    if (favoriteSongs.isEmpty()) {
+                        System.out.println("Nessun preferito trovato per: " + userEmail);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Platform.runLater(() -> showError("Errore nel caricamento dei favoriti: " + e.getMessage()));
+            }
+        }).start();
+    }
+
+
+
+    private void removeFavorite(Song song) {
+        new Thread(() -> {
+            try {
+                clientService.removeFavorite(userEmail, song.getId());
+                Platform.runLater(() -> {
+                    favoriteSongs.remove(song);
+                    countLabel.setText(favoriteSongs.size() + " songs");
+                });
+            } catch (IOException e) {
+                Platform.runLater(() -> showError("Errore nella rimozione"));
+            }
+        }).start();
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Errore");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
