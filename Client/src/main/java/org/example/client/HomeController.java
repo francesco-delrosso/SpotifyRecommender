@@ -322,7 +322,7 @@ public class HomeController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/client/friend-requests-view.fxml"));
             Parent root = loader.load();
 
-            FriendsSearchController controller = loader.getController();
+            FriendRequestsController controller = loader.getController();
             controller.setUserEmail(this.currentUserEmail);
             controller.loadInitialData();
 
@@ -334,13 +334,12 @@ public class HomeController {
     }
     @FXML
     private void handleLogout() {
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/client/friend-requests-view.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/client/login-view.fxml"));
             Parent root = loader.load();
 
-            FriendsSearchController controller = loader.getController();
-            controller.setUserEmail(this.currentUserEmail);
-            controller.loadInitialData();
+            // Nessuna necessità di configurare il controller, poiché l'utente sta effettuando il logout
+            // e quindi verrà mostrata la schermata di login
 
             Stage stage = (Stage) songTable.getScene().getWindow();
             stage.setScene(new Scene(root, 1000, 700));
@@ -348,6 +347,5 @@ public class HomeController {
             e.printStackTrace();
         }
     }
-
 
 }
