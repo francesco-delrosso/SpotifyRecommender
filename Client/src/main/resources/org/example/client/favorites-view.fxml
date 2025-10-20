@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.client.FavoritesController"
+      style="-fx-background-color: #121212;"
+      spacing="20"
+      padding="30">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Button text="← Indietro" onAction="#handleBack"
+                style="-fx-background-color: #282828; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 10 20; -fx-cursor: hand;"/>
+        <Label text="❤️ I Miei Preferiti"
+               style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <Separator style="-fx-background-color: #282828;"/>
+
+    <!-- Lista canzoni preferite -->
+    <VBox spacing="10" VBox.vgrow="ALWAYS">
+        <Label text="Le tue canzoni preferite"
+               style="-fx-text-fill: #b3b3b3; -fx-font-size: 14px;"/>
+        <ListView fx:id="favoritesListView"
+                  style="-fx-background-color: #121212; -fx-border-color: transparent;"
+                  VBox.vgrow="ALWAYS"/>
+    </VBox>
+
+    <!-- Refresh Button -->
+    <HBox alignment="CENTER">
+        <Button text="🔄 Aggiorna" onAction="#handleRefresh"
+                style="-fx-background-color: #1DB954; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 20; -fx-padding: 12 30; -fx-cursor: hand;"/>
+    </HBox>
+</VBox>
