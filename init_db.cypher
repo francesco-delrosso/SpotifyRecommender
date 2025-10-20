@@ -100,3 +100,5 @@ MERGE (album)-[:BY_ARTIST]->(artist)
 WITH s, album, g
 MERGE (s)-[:IN_ALBUM]->(album)
 MERGE (s)-[:HAS_GENRE]->(g);
+
+
