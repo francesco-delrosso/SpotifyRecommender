@@ -10,10 +10,17 @@ public class Main {
 
     public static void main(String[] args) {
         // Connessione a Neo4j
+        Config config = Config.builder()
+                .withoutEncryption()
+                .build();
+
+        // Assegna direttamente al driver statico
         neo4jDriver = GraphDatabase.driver(
                 "bolt://localhost:7687",
-                AuthTokens.basic("neo4j", "Madrid2025!")
+                AuthTokens.basic("neo4j", "Madrid2025!"),
+                config
         );
+
 
         System.out.println("Server avviato sulla porta " + PORT);
 

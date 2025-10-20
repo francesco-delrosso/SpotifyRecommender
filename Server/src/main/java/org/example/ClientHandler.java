@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+
+
+import org.example.client.Song;
 import org.neo4j.driver.*;
 class ClientHandler extends Thread {
     private Socket socket;
@@ -14,6 +18,8 @@ class ClientHandler extends Thread {
     private FriendshipService friendshipService;
     private BufferedReader in;
     private PrintWriter out;
+    private final FavoriteService favoriteService;
+
 
     public ClientHandler(Socket socket, org.neo4j.driver.Driver driver){
         this.socket = socket;
@@ -21,6 +27,7 @@ class ClientHandler extends Thread {
         this.authService = new AuthService(driver);
         this.songService = new SongService(driver);
         this.friendshipService = new FriendshipService(driver);
+        this.favoriteService = new FavoriteService(driver);
     }
 
 
@@ -140,6 +147,49 @@ class ClientHandler extends Thread {
                     out.println("ERROR|Formato non valido");
                 }
                 break;
+            case "ADD_FAVORITE": {
+                String email = parts[1];
+                String songId = parts[2];
+                boolean ok = favoriteService.addFavorite(email, songId);
+                out.println(ok ? "OK" : "ERROR");
+                break; // ⚠️ MANCAVA IL BREAK
+            }
+
+            case "REMOVE_FAVORITE": {
+                String email = parts[1];
+                String songId = parts[2];
+                boolean ok = favoriteService.removeFavorite(email, songId);
+                out.println(ok ? "OK" : "ERROR");
+                break; // ⚠️ MANCAVA IL BREAK
+            }
+
+            case "GET_FAVORITES": {
+                if (parts.length == 2) {
+                    String email = parts[1];
+                    var favorites = favoriteService.getFavorites(email);
+
+                    if (favorites.isEmpty()) {
+                        out.println("EMPTY");
+                    } else {
+                        StringBuilder response = new StringBuilder();
+                        for (FavoriteService.FavoriteSong s : favorites) {
+                            if (response.length() > 0) response.append("|");
+                            response.append(s.toProtocolString());
+                        }
+                        out.println(response.toString());
+                    }
+                } else {
+                    out.println("ERROR|Formato non valido");
+                }
+                break;
+            }
+
+
+
+
+
+
+
 
             default:
                 out.println("ERROR|Comando sconosciuto");

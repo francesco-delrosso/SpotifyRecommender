@@ -3,97 +3,148 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Circle?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.LoginController"
-      spacing="15" alignment="TOP_CENTER" style="-fx-background-color: #f5f5f5;">
-    <padding>
-        <Insets top="20" right="30" bottom="20" left="30"/>
-    </padding>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.client.LoginController"
+           style="-fx-background-color: linear-gradient(to bottom, #121212, #1a1a1a);">
 
-    <!-- Header -->
-    <Label text="Spotify Recommender" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1DB954;">
+    <!-- Background decorative circles -->
+    <Circle radius="150" fill="#1DB954" opacity="0.1" translateX="-200" translateY="-150"/>
+    <Circle radius="100" fill="#1ed760" opacity="0.05" translateX="220" translateY="180"/>
+
+    <!-- Main Card Container -->
+    <VBox alignment="CENTER" spacing="0" maxWidth="450" maxHeight="650"
+          style="-fx-background-color: #282828; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 30, 0, 0, 10);">
         <padding>
-            <Insets bottom="10"/>
+            <Insets top="50" right="50" bottom="50" left="50"/>
         </padding>
-    </Label>
 
-    <!-- Connection Status -->
-    <HBox spacing="10" alignment="CENTER">
-        <Label fx:id="statusLabel" text="Non connesso" style="-fx-text-fill: gray;"/>
-        <Button fx:id="connectButton" text="Connetti" onAction="#handleConnect"
-                style="-fx-background-color: #1DB954; -fx-text-fill: white;"/>
-    </HBox>
+        <!-- Logo & Title -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="🎵" style="-fx-font-size: 48px;"/>
+            <Label text="Spotify Recommender"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1DB954;"/>
+            <Label text="Discover music with friends"
+                   style="-fx-font-size: 13px; -fx-text-fill: #b3b3b3;">
+                <VBox.margin>
+                    <Insets bottom="20"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
 
-    <Separator/>
 
-    <!-- Login Pane -->
-    <VBox fx:id="loginPane" spacing="10" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5;">
-        <Label text="Login" style="-fx-font-size: 18px; -fx-font-weight: bold;">
-            <padding>
-                <Insets bottom="10"/>
-            </padding>
-        </Label>
+        <!-- Login Pane -->
+        <VBox fx:id="loginPane" spacing="18" alignment="CENTER">
+            <Label text="Log in to your account"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
 
-        <TextField fx:id="loginEmail" promptText="Email" prefWidth="250">
-            <font>
-                <Font size="14"/>
-            </font>
-        </TextField>
+            <VBox spacing="8">
+                <Label text="Email address"
+                       style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+                <TextField fx:id="loginEmail" promptText="Enter your email"
+                           style="-fx-background-color: #3e3e3e; -fx-text-fill: white; 
+                                  -fx-prompt-text-fill: #7f7f7f; -fx-background-radius: 8;
+                                  -fx-padding: 12; -fx-font-size: 14px; -fx-border-color: transparent;
+                                  -fx-border-radius: 8;"
+                           prefWidth="300"/>
+            </VBox>
 
-        <PasswordField fx:id="loginPassword" promptText="Password" prefWidth="250">
-            <font>
-                <Font size="14"/>
-            </font>
-        </PasswordField>
+            <VBox spacing="8">
+                <Label text="Password"
+                       style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+                <PasswordField fx:id="loginPassword" promptText="Enter your password"
+                               style="-fx-background-color: #3e3e3e; -fx-text-fill: white; 
+                                      -fx-prompt-text-fill: #7f7f7f; -fx-background-radius: 8;
+                                      -fx-padding: 12; -fx-font-size: 14px; -fx-border-color: transparent;
+                                      -fx-border-radius: 8;"
+                               prefWidth="300"/>
+            </VBox>
 
-        <Button text="Accedi" onAction="#handleLogin" prefWidth="250"
-                style="-fx-background-color: #1DB954; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;">
-            <font>
-                <Font size="14"/>
-            </font>
-        </Button>
+            <Button text="Log In" onAction="#handleLogin"
+                    style="-fx-background-color: #1DB954; -fx-text-fill: white; 
+                           -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 25;
+                           -fx-padding: 14 0; -fx-cursor: hand;"
+                    prefWidth="300">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </Button>
 
-        <Hyperlink text="Non hai un account? Registrati" onAction="#showRegisterPane"
-                   style="-fx-text-fill: #1DB954;"/>
+            <Separator prefWidth="300" style="-fx-background-color: #404040;">
+                <VBox.margin>
+                    <Insets top="10" bottom="10"/>
+                </VBox.margin>
+            </Separator>
+
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="Don't have an account?"
+                       style="-fx-text-fill: #b3b3b3; -fx-font-size: 13px;"/>
+                <Hyperlink text="Sign up" onAction="#showRegisterPane"
+                           style="-fx-text-fill: #1DB954; -fx-font-size: 13px; -fx-font-weight: bold; 
+                                  -fx-underline: false; -fx-padding: 0;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Register Pane -->
+        <VBox fx:id="registerPane" spacing="18" alignment="CENTER" visible="false" managed="false">
+            <Label text="Create your account"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;">
+                <VBox.margin>
+                    <Insets bottom="10"/>
+                </VBox.margin>
+            </Label>
+
+            <VBox spacing="8">
+                <Label text="Email address"
+                       style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+                <TextField fx:id="registerEmail" promptText="Enter your email"
+                           style="-fx-background-color: #3e3e3e; -fx-text-fill: white; 
+                                  -fx-prompt-text-fill: #7f7f7f; -fx-background-radius: 8;
+                                  -fx-padding: 12; -fx-font-size: 14px; -fx-border-color: transparent;
+                                  -fx-border-radius: 8;"
+                           prefWidth="300"/>
+            </VBox>
+
+            <VBox spacing="8">
+                <Label text="Password"
+                       style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+                <PasswordField fx:id="registerPassword" promptText="Create a password"
+                               style="-fx-background-color: #3e3e3e; -fx-text-fill: white; 
+                                      -fx-prompt-text-fill: #7f7f7f; -fx-background-radius: 8;
+                                      -fx-padding: 12; -fx-font-size: 14px; -fx-border-color: transparent;
+                                      -fx-border-radius: 8;"
+                               prefWidth="300"/>
+            </VBox>
+
+            <Button text="Sign Up" onAction="#handleRegister"
+                    style="-fx-background-color: #1DB954; -fx-text-fill: white; 
+                           -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 25;
+                           -fx-padding: 14 0; -fx-cursor: hand;"
+                    prefWidth="300">
+                <VBox.margin>
+                    <Insets top="10"/>
+                </VBox.margin>
+            </Button>
+
+            <Separator prefWidth="300" style="-fx-background-color: #404040;">
+                <VBox.margin>
+                    <Insets top="10" bottom="10"/>
+                </VBox.margin>
+            </Separator>
+
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="Already have an account?"
+                       style="-fx-text-fill: #b3b3b3; -fx-font-size: 13px;"/>
+                <Hyperlink text="Log in" onAction="#showLoginPane"
+                           style="-fx-text-fill: #1DB954; -fx-font-size: 13px; -fx-font-weight: bold; 
+                                  -fx-underline: false; -fx-padding: 0;"/>
+            </HBox>
+        </VBox>
+
     </VBox>
 
-    <!-- Register Pane -->
-    <VBox fx:id="registerPane" spacing="10" alignment="CENTER" visible="false" managed="false"
-          style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 5;">
-        <Label text="Registrazione" style="-fx-font-size: 18px; -fx-font-weight: bold;">
-            <padding>
-                <Insets bottom="10"/>
-            </padding>
-        </Label>
-
-        <TextField fx:id="registerEmail" promptText="Email" prefWidth="250">
-            <font>
-                <Font size="14"/>
-            </font>
-        </TextField>
-
-        <PasswordField fx:id="registerPassword" promptText="Password" prefWidth="250">
-            <font>
-                <Font size="14"/>
-            </font>
-        </PasswordField>
-
-        <Button text="Registrati" onAction="#handleRegister" prefWidth="250"
-                style="-fx-background-color: #1DB954; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10;">
-            <font>
-                <Font size="14"/>
-            </font>
-        </Button>
-
-        <Hyperlink text="Hai già un account? Accedi" onAction="#showLoginPane"
-                   style="-fx-text-fill: #1DB954;"/>
-    </VBox>
-
-    <Region VBox.vgrow="ALWAYS"/>
-
-    <!-- Exit Button -->
-    <Button text="Esci" onAction="#handleExit" prefWidth="100"
-            style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
-
-</VBox>
+</StackPane>
