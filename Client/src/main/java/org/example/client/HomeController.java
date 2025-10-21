@@ -65,6 +65,10 @@ public class HomeController {
         userEmailLabel.setText(email);
     }
 
+    public void refreshData() {
+        loadSongs();
+    }
+
     /** Gestione colonna dei favoriti */
     private void setupFavoriteColumn() {
         favoriteColumn.setCellFactory(column -> new TableCell<Song, Void>() {
