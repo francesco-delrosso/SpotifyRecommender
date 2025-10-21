@@ -52,7 +52,7 @@ class ClientHandler extends Thread {
             }
         }
     }
-
+//commento: DAKI PAKI GLORY 420
     private void processCommand(String command) {
         String[] parts = command.split("\\|");
         String action = parts[0];
