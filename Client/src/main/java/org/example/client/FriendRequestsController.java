@@ -40,6 +40,7 @@ public class FriendRequestsController {
             Parent root = loader.load();
             HomeController controller = loader.getController();
             controller.setUserEmail(this.userEmail); // Passa l'email indietro
+            controller.refreshData();
 
             Stage stage = (Stage) requestsListView.getScene().getWindow(); // o searchField per FriendsSearch
             stage.setScene(new Scene(root, 1000, 700));

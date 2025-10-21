@@ -67,6 +67,7 @@ public class FriendsSearchController {
             Parent root = loader.load();
             HomeController controller = loader.getController();
             controller.setUserEmail(this.userEmail);
+            controller.refreshData();
 
             Stage stage = (Stage) searchField.getScene().getWindow();
             stage.setScene(new Scene(root, 1000, 700));
