@@ -93,6 +93,7 @@ public class FavoriteController {
 
             HomeController controller = loader.getController();
             controller.setUserEmail(this.userEmail);
+            controller.refreshData();
 
             Stage stage = (Stage) favoriteTable.getScene().getWindow();
             stage.setScene(new Scene(root, 1000, 700));
