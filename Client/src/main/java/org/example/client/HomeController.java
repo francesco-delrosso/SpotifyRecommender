@@ -55,14 +55,12 @@ public class HomeController {
         setupFavoriteColumn();
 
         songTable.setItems(songs);
-
-        // Carica prima pagina
-        loadSongs();
     }
 
     public void setUserEmail(String email) {
         this.currentUserEmail = email;
         userEmailLabel.setText(email);
+        loadSongs();
     }
 
     public void refreshData() {
