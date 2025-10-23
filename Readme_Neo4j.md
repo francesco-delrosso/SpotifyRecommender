@@ -6,11 +6,8 @@
 3. [Architecture and Core Components](#architecture-and-core-components)
 4. [Cypher Query Language](#cypher-query-language)
 5. [Data Modeling and Performance](#data-modeling-and-performance)
-6. [Project Implementation](#project-implementation)
-7. [Use Cases and Applications](#use-cases-and-applications)
-8. [Advantages and Considerations](#advantages-and-considerations)
-9. [Best Practices and Recommendations](#best-practices-and-recommendations)
-10. [Additional Resources](#additional-resources)
+6. [Use Cases and Applications](#use-cases-and-applications)
+
 
 ---
 
