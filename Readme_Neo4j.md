@@ -341,26 +341,14 @@ Enterprise visualization platform offering:
 
 ```cypher
 // Create users
-CREATE (u1:User {username: 'Alice'})
-CREATE (u2:User {username: 'Bob'})
-CREATE (u3:User {username: 'Charlie'})
+CREATE (u:User {userId: randomUUID(), email: $email, password: $password, createdAt: datetime()}) RETURN u.userId AS id";)
 
-// Create songs
-CREATE (s1:Song {title: 'Imagine', artist: 'John Lennon'})
-CREATE (s2:Song {title: 'Hey Jude', artist: 'The Beatles'})
-
-// Relationships
-CREATE (u1)-[:FRIEND]->(u2)
-CREATE (u2)-[:FRIEND]->(u3)
-CREATE (u1)-[:LIKES]->(s1)
-CREATE (u2)-[:LIKES]->(s2)
-```
-
-Recommendation query example:
-```cypher
-MATCH (u:User {username:'Alice'})-[:FRIEND]->(f)-[:LIKES]->(s:Song)
-WHERE NOT (u)-[:LIKES]->(s)
-RETURN DISTINCT s.title AS RecommendedSong, s.artist AS Artist
+// Create friend relationship
+MATCH (a:User {email: $requester})-[r:FRIEND_REQUEST]->(b:User {email: $user}) " +
+                                "CREATE (a)-[:FRIENDS]->(b), (b)-[:FRIENDS]->(a)
+// Create "song favorite" relationship
+MATCH (u:User {email: $email}), (s:Song {songId: $songId}) " +
+                                "MERGE (u)-[:FAVORITES]->(s)
 ```
 
 ---
