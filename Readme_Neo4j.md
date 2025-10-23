@@ -340,6 +340,7 @@ CREATE (u:User {userId: randomUUID(), email: $email, password: $password, create
 // Create friend relationship
 MATCH (a:User {email: $requester})-[r:FRIEND_REQUEST]->(b:User {email: $user}) " +
                                 "CREATE (a)-[:FRIENDS]->(b), (b)-[:FRIENDS]->(a)
+
 // Create "song favorite" relationship
 MATCH (u:User {email: $email}), (s:Song {songId: $songId}) " +
                                 "MERGE (u)-[:FAVORITES]->(s)
