@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎵 **Spotify Recommender**
+# 🎵 Spotify Recommender
 
 ### *Discover music you’ll love — powered by your friends and your favorites.*
 
@@ -12,60 +12,49 @@
 
 ---
 
-## 📖 **Introduction**
+## 📖 Introduction
 
-**Spotify Recommender** is an innovative **JavaFX desktop application** that helps users discover new music through a combination of **personal preferences** and **social connections**.
+**Spotify Recommender** is an advanced **JavaFX desktop application** designed to help users explore and discover new music by leveraging both **personal listening preferences** and **social connections**.
 
-The system analyzes the songs a user has marked as favorites and cross-references them with their friends’ preferences to deliver **personalized, socially-informed music recommendations**.
-
-By blending **collaborative filtering** (suggestions based on similar users) and **content-based filtering** (suggestions based on liked tracks), Spotify Recommender creates a dynamic, community-driven listening experience — inspired by the spirit of Spotify itself.
+The application analyzes the songs a user marks as favorites and compares them with the preferences of their friends to provide **personalized, socially-informed recommendations**. By combining **collaborative filtering** (suggestions based on similar users) and **content-based filtering** (suggestions based on liked tracks), Spotify Recommender offers a **dynamic, community-driven listening experience** inspired by Spotify’s own recommendation philosophy.
 
 ---
 
-## 🚀 **Key Features**
+## 🚀 Key Features
 
 | 🌟 Feature | 💬 Description |
-|-------------|----------------|
-| 🎧 **Song Browsing** | Explore a rich catalog of songs, complete with details like title, artist, and popularity. |
-| ⭐ **Favorites System** | Add or remove tracks from your favorites list with a single click on a star icon. |
-| 🔍 **Smart Search** | Quickly find songs by name or artist. |
-| 👥 **Friend System** | Search for users, send and accept friend requests. |
-| 💡 **Social Recommendations** | Get song suggestions based on both your favorites and your friends’ favorite tracks. |
+|-----------|----------------|
+| 🎧 **Song Browsing** | Explore a comprehensive catalog of songs with detailed metadata including title, artist, and popularity. |
+| ⭐ **Favorites System** | Add or remove tracks from your favorites list seamlessly with a single click. |
+| 🔍 **Smart Search** | Efficiently search for songs by title or artist. |
+| 👥 **Friend System** | Connect with other users, send and accept friend requests, and explore their music preferences. |
+| 💡 **Social Recommendations** | Receive song suggestions based on both your favorites and the favorites of your friends. |
 
 ---
 
-## 🧠 **How It Works**
+## 🧠 How It Works
 
-> “The more you connect, the better it gets.”  
-
-1. 🧾 **Login** – The user signs into the application using their credentials.  
-2. 🌐 **Data Fetching** – The client communicates with the server to retrieve available songs and user data.  
-3. ⭐ **Favorites Tracking** – When a user marks songs as favorites, they are saved and linked to their profile.  
-4. 🧩 **Recommendation Engine** – The system compares the user’s favorites with those of their friends to identify musical similarities.  
-5. 🎯 **Personalized Suggestions** – The user receives a curated list of songs that best match their listening taste and social network.
+1. 🧾 **Login** – Users authenticate using their credentials.  
+2. 🌐 **Data Fetching** – The client retrieves songs and user data from the server.  
+3. ⭐ **Favorites Tracking** – Users’ favorite songs are stored and linked to their profiles.  
+4. 🧩 **Recommendation Engine** – The system compares the favorites of the user with those of their friends to find patterns and similarities.  
+5. 🎯 **Personalized Suggestions** – Users receive a curated list of recommendations tailored to both their taste and social network.
 
 ---
 
-## 🖥️ **Technologies Used**
+## 🖥️ Technologies Used
 
-- 🧩 **JavaFX** — for the interactive user interface  
-- - 🧠 **Neo4j (Graph Database)** — for managing relationships between users, songs, and favorites  
-  > Neo4j allows the system to represent the music ecosystem as a **graph**, where users, songs, and friendships are interconnected nodes, enabling advanced **relationship-based recommendations**.  
-- 🧱 **FXML & CSS** — for structured and visually appealing UI design  
-- 🧰 **Maven** — for project build and dependency management
-- 🐳 **Docker** — for easy setup and deployment of the server and Neo4j database  
-  > Docker ensures a consistent, portable environment — you can spin up the backend and database in seconds using preconfigured containers.
+- 🧩 **JavaFX** — Interactive user interface framework.  
+- 🧠 **Neo4j (Graph Database)** — Represents the music ecosystem as a **graph**, with nodes for users, songs, and friendships, enabling advanced **relationship-based recommendations**.  
+- 🧱 **FXML & CSS** — For structured and visually appealing UI design.  
+- 🧰 **Maven** — Project build and dependency management.  
+- 🐳 **Docker** — Containerized environment for both the server and Neo4j database, ensuring **portability and reproducibility**.
 
 ---
 
-## 🧩 **Installation and Setup Guide**
+## 🧩 Installation and Setup Guide
 
-Follow these steps to install and run **Spotify Recommender** from scratch.  
-These instructions allow any student to reproduce the demo independently.
-
----
-
-### 🧰 **1. Prerequisites**
+### 1. Prerequisites
 
 Ensure the following tools are installed:
 
@@ -73,46 +62,112 @@ Ensure the following tools are installed:
 - 🧱 **Maven 3.9+**  
 - 🐳 **Docker** and **Docker Compose**  
 
-You can verify installations with:
+Verify installations:
+
 ```bash
 java -version
 mvn -version
 docker -v
 ```
 
-### 🧰 **2. Clone the project**
+### 2. Clone the project
 
-Clone the Repository.
- ```bash
+```bash
 git clone https://github.com/francesco-delrosso/SpotifyRecommender.git
 cd spotify-recommender
- ```
+```
 
-### **3. Download the dataset**
+### 3. Download the dataset
 
 Download the Spotify dataset from Kaggle:  
 🔗 [Spotify Tracks Dataset](https://www.kaggle.com/datasets/maharshipandya/-spotify-tracks-dataset)
-Put it in the "import" folder.
+
+Place it in the `import` folder:
+
 ```
 spotify-recommender/
 ├── client/
 ├── server/
 ├── import/
-│ └── dataset.csv
+│   └── dataset.csv
 └── docker-compose.yml
 ```
 
-### **🐳 4. Set up docker**
+### 4. Set up Docker environment
 
-Run the following command from the project root to start the environment:
+Start the environment:
 
 ```bash
 docker compose up
 ```
-Connect to http://localhost:7474 and import the dataset.
-Run the server and the client.
 
-## 👨‍💻 **Authors**
+Access Neo4j at [http://localhost:7474](http://localhost:7474), import the dataset, then run the server and client.
+
+---
+
+## 🐳 Docker Compose Explanation
+
+The `docker-compose.yml` file orchestrates **two services**: `neo4j` and `jupyter`.
+
+### 1. Neo4j Service
+
+```yaml
+neo4j:
+  image: neo4j:latest
+  container_name: neo4j-demo
+  environment:
+    - NEO4J_AUTH=neo4j/Madrid2025!
+    - NEO4JLABS_PLUGINS=["apoc"]
+    - NEO4J_apoc_import_file_enabled=true
+    - NEO4J_dbms_directories_import=/import
+  ports:
+    - "7474:7474"
+    - "7687:7687"
+  volumes:
+    - ./data:/data
+    - ./import:/import
+    - ./logs:/logs
+  restart: always
+```
+
+- **image**: official Neo4j image.  
+- **NEO4J_AUTH**: sets the default user and password.  
+- **NEO4JLABS_PLUGINS**: enables APOC library for advanced graph procedures.  
+- **Import configuration**: allows loading CSV datasets from `/import`.  
+- **ports**: exposes Neo4j Browser (`7474`) and Bolt protocol (`7687`).  
+- **volumes**: mounts local directories for persistence.  
+- **restart**: ensures container restarts automatically.
+
+### 2. Jupyter Notebook Service
+
+```yaml
+jupyter:
+  image: jupyter/base-notebook:latest
+  container_name: jupyter-notebook
+  ports:
+    - "8888:8888"
+  volumes:
+    - ./notebooks:/home/jovyan/work
+  environment:
+    - JUPYTER_TOKEN=
+    - JUPYTER_ENABLE_LAB=yes
+  command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
+  depends_on:
+    - neo4j
+  restart: unless-stopped
+```
+
+- Provides an **interactive Python environment**.  
+- **depends_on**: ensures Neo4j starts first.  
+- **volumes**: persists notebooks locally.  
+- **environment & command**: disables authentication for development.  
+- **restart**: restarts container unless explicitly stopped.
+
+> Together, these services provide a **reproducible environment** for both database management and data analysis.
+
+---
+
+## 👨‍💻 Authors
 
 | Name |
 |------|
@@ -122,14 +177,16 @@ Run the server and the client.
 
 ---
 
-## 💬 **Future Improvements**
+## 💬 Future Improvements
 
-- 🎶 Integration with the **Spotify API**  
-- 🧠 Machine Learning–based recommendation engine   
-- 📊 Analytics for listening patterns  
+- 🎶 Integration with **Spotify API** for real-time data.  
+- 🧠 Advanced **machine learning recommendation engine**.  
+- 📊 Analytics for user listening patterns.
 
 ---
 
 <div align="center">
 
-✨ *“Because great music*
+✨ *“Because great music deserves a thoughtful recommendation.”*  
+
+</div>
