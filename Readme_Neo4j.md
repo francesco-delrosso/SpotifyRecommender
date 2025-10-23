@@ -304,12 +304,6 @@ Enterprise visualization platform offering:
 (Artist)-[:PERFORMS]->(Song)
 ```
 
-#### Recommendation Algorithms
-- **Friend-Based Recommendations**: Suggesting songs liked by user's social network
-- **Collaborative Filtering**: Finding users with similar musical tastes
-- **Content-Based Filtering**: Recommending songs similar to user's preferences
-- **Hybrid Recommendation Engine**: Combining multiple approaches for optimal results
-
 ---
 
 # ⚡ Advantages and Disadvantages of Neo4j
