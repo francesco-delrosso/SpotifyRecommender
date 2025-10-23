@@ -9,7 +9,7 @@ public class User {
 
     public User(String userId, String email, String status) {
         this.userId = new SimpleStringProperty(userId);
-        this.email = new SimpleStringProperty(email);
+        this.email       = new SimpleStringProperty(email);
         this.status = new SimpleStringProperty(status);
     }
 
