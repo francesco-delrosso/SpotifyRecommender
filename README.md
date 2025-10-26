@@ -98,8 +98,9 @@ Start the environment:
 ```bash
 docker compose up
 ```
-
-Access Neo4j at [http://localhost:7474](http://localhost:7474) using user: neo4j and password: Madrid2025!, import the dataset, then run the server and client.
+Access Neo4j at [http://localhost:7474](http://localhost:7474) using user: neo4j and password: Madrid2025!.\
+import the database using the init_db.cypher file in the project.\
+Run the server and client.
 
 ---
 
