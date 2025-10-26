@@ -328,9 +328,9 @@ Enterprise visualization platform offering:
 
 ---
 
-# ⚡ Advantages and Disadvantages of Neo4j
+#  Advantages and Disadvantages of Neo4j
 
-| ✅ Advantages | ⚠️ Disadvantages |
+|  Advantages |  Disadvantages |
 |---------------|------------------|
 | Intuitive modeling of connected data | Can require powerful hardware for large graphs |
 | Fast traversal and relationship queries | Less suited for purely tabular data |
@@ -340,7 +340,7 @@ Enterprise visualization platform offering:
 
 ---
 
-# 🧠 When to Use Neo4j
+# When to Use Neo4j
 
 **Use Neo4j if:**
 - Your data is highly interconnected (social, network, recommendation, graph analytics)
@@ -353,7 +353,7 @@ Enterprise visualization platform offering:
 
 ---
 
-# 🧩 Example in SpotifyRecommender
+#  Example in SpotifyRecommender
 
 ```cypher
 // Create users
@@ -376,7 +376,7 @@ MERGE (u)-[:FAVORITES]->(s);
 ```
 ---
 
-# 🧾 Summary
+#  Summary
 
 Neo4j lets you:
 - Represent **real-world relationships** naturally
@@ -390,7 +390,7 @@ In **SpotifyRecommender**, Neo4j enables:
 
 ---
 
-# 📚 Further Reading
+#  Further Reading
 
 - [Official Neo4j Documentation](https://neo4j.com/docs/)
 - [Cypher Query Language Reference](https://neo4j.com/developer/cypher/)
