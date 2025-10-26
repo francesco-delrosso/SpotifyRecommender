@@ -1,6 +1,7 @@
 package org.example;
 
 import org.neo4j.driver.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class FavoriteService {
         try (Session session = driver.session()) {
             session.executeWrite(tx -> {
                 tx.run("MATCH (u:User {email: $email}), (s:Song {songId: $songId}) " +
-                                "MERGE (u)-[:FAVORITES]->(s)",
+                                "MERGE (u)-[:LIKES]->(s)",  // Cambiato da FAVORITES a LIKES
                         Values.parameters("email", email, "songId", songId));
                 return null;
             });
@@ -29,7 +30,7 @@ public class FavoriteService {
     public boolean removeFavorite(String email, String songId) {
         try (Session session = driver.session()) {
             session.executeWrite(tx -> {
-                tx.run("MATCH (u:User {email: $email})-[r:FAVORITES]->(s:Song {songId: $songId}) " +
+                tx.run("MATCH (u:User {email: $email})-[r:LIKES]->(s:Song {songId: $songId}) " +  // Cambiato da FAVORITES a LIKES
                                 "DELETE r",
                         Values.parameters("email", email, "songId", songId));
                 return null;
@@ -45,13 +46,12 @@ public class FavoriteService {
         try (Session session = driver.session()) {
             return session.executeRead(tx -> {
                 Result result = tx.run(
-                        "MATCH (u:User {email: $email})-[:FAVORITES]->(s:Song) " +
+                        "MATCH (u:User {email: $email})-[:LIKES]->(s:Song) " +  // Cambiato da FAVORITES a LIKES
                                 "RETURN s.songId AS id, s.trackName AS name, " +
                                 "s.artists AS artists, s.popularity AS popularity, " +
                                 "s.duration_ms AS duration",
                         Values.parameters("email", email)
                 );
-
                 List<FavoriteSong> favorites = new ArrayList<>();
                 while (result.hasNext()) {
                     org.neo4j.driver.Record record = result.next();

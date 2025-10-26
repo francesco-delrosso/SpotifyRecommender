@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HomeController {
 
@@ -302,6 +303,39 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private Button btnRecommendations;
+
+    @FXML
+    private void handleRecommendations() {
+        try {
+            String userEmail = this.currentUserEmail;
+            List<Map<String, Object>> recommendations = clientService.getRecommendations(userEmail);
+
+            System.out.println("=== RACCOMANDAZIONI ===");
+            System.out.println("Totale raccomandazioni: " + recommendations.size());
+            System.out.println();
+
+            for (Map<String, Object> rec : recommendations) {
+                System.out.println("ID: " + rec.get("id"));
+                System.out.println("Nome: " + rec.get("name"));
+                System.out.println("Artisti: " + rec.get("artists"));
+                System.out.println("Popolarità: " + rec.get("popularity"));
+                System.out.println("Durata: " + rec.get("duration") + " ms");
+                System.out.println("Amici che la amano: " + rec.get("friendsWhoLike"));
+                System.out.println("Like totali: " + rec.get("totalLikes"));
+                System.out.println("Similarity Score: " + rec.get("similarityScore"));
+                System.out.println("---");
+            }
+
+        } catch (IOException e) {
+            System.err.println("Errore nel recupero delle raccomandazioni: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     @FXML
     private void handleGoToFriendsSearch() {
         try {

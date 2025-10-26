@@ -3,6 +3,7 @@ package org.example.client;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import org.example.client.Song;
@@ -153,6 +154,42 @@ public class ClientService {
         out.println("GET_ALL_USERS");
         return in.readLine();
     }
+
+    public List<Map<String, Object>> getRecommendations(String userEmail) throws IOException {
+        if (!connected) connect();
+        out.println("GET_RECOMMENDATIONS|" + userEmail);
+
+        String response = in.readLine();
+        if (response.startsWith("RECOMMENDATIONS_COUNT:")) {
+            int count = Integer.parseInt(response.split(":")[1]);
+            List<Map<String, Object>> recommendations = new ArrayList<>();
+
+            for (int i = 0; i < count; i++) {
+                String recLine = in.readLine();
+                if (recLine.startsWith("RECOMMENDATION:")) {
+                    String[] parts = recLine.substring(15).split(";");
+                    Map<String, Object> rec = new HashMap<>();
+                    rec.put("id", parts[0]);
+                    rec.put("name", parts[1]);
+                    rec.put("artists", parts[2]);
+                    rec.put("popularity", Integer.parseInt(parts[3]));
+                    rec.put("duration", Integer.parseInt(parts[4]));
+                    rec.put("friendsWhoLike", Integer.parseInt(parts[5]));
+                    rec.put("totalLikes", Integer.parseInt(parts[6]));
+
+                    // Fix: sostituisci virgola con punto prima del parsing
+                    String scoreStr = parts[7].replace(",", ".");
+                    rec.put("similarityScore", Double.parseDouble(scoreStr));
+
+                    recommendations.add(rec);
+                }
+            }
+            return recommendations;
+        }
+        return new ArrayList<>();
+    }
+
+
 
 
 

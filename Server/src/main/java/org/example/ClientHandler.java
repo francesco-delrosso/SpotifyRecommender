@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
+import java.util.List;
 
 
 import org.example.client.Song;
@@ -52,8 +52,7 @@ class ClientHandler extends Thread {
             }
         }
     }
-//commento: DAKI PAKI GLORY 420
-    private void processCommand(String command) {
+    private void processCommand(String command) throws IOException {
         String[] parts = command.split("\\|");
         String action = parts[0];
 
@@ -152,7 +151,7 @@ class ClientHandler extends Thread {
                 String songId = parts[2];
                 boolean ok = favoriteService.addFavorite(email, songId);
                 out.println(ok ? "OK" : "ERROR");
-                break; // ⚠️ MANCAVA IL BREAK
+                break;
             }
 
             case "REMOVE_FAVORITE": {
@@ -160,7 +159,7 @@ class ClientHandler extends Thread {
                 String songId = parts[2];
                 boolean ok = favoriteService.removeFavorite(email, songId);
                 out.println(ok ? "OK" : "ERROR");
-                break; // ⚠️ MANCAVA IL BREAK
+                break;
             }
 
             case "GET_FAVORITES": {
@@ -183,6 +182,16 @@ class ClientHandler extends Thread {
                 }
                 break;
             }
+
+            case "GET_RECOMMENDATIONS":
+                String username = parts[1];
+                try {
+                    handleGetRecommendations(username);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+
 
 
 
@@ -255,6 +264,64 @@ class ClientHandler extends Thread {
             out.println(response.toString());
         } catch (Exception e) {
             out.println("ERROR|" + e.getMessage());
+        }
+    }
+
+
+    private void handleGetRecommendations(String username) throws IOException {
+        RecommendationService recommendationService = new RecommendationService(driver);
+
+        System.out.println("=== DEBUG RACCOMANDAZIONI ===");
+        System.out.println("Username richiesto: " + username);
+
+        // Verifica se l'utente esiste
+        try (Session session = driver.session()) {
+            Result result = session.run(
+                    "MATCH (u:User {email: $email}) RETURN u",
+                    Values.parameters("email", username)
+            );
+            System.out.println("Utente trovato: " + result.hasNext());
+
+            // Verifica i preferiti dell'utente
+            Result favorites = session.run(
+                    "MATCH (u:User {email: $email})-[:LIKES]->(s:Song) RETURN count(s) as count",
+                    Values.parameters("email", username)
+            );
+            if (favorites.hasNext()) {
+                System.out.println("Preferiti utente: " + favorites.next().get("count").asInt());
+            }
+
+            // Verifica gli amici
+            Result friends = session.run(
+                    "MATCH (u:User {email: $email})-[:FRIEND_OF]-(f:User) RETURN count(f) as count",
+                    Values.parameters("email", username)
+            );
+            if (friends.hasNext()) {
+                System.out.println("Numero amici: " + friends.next().get("count").asInt());
+            }
+        }
+
+        List<RecommendationService.RecommendedSong> recommendations =
+                recommendationService.getRecommendations(username, 20);
+
+        System.out.println("Raccomandazioni trovate: " + recommendations.size());
+        System.out.println("===========================");
+
+        out.println("RECOMMENDATIONS_COUNT:" + recommendations.size());
+
+        for (RecommendationService.RecommendedSong song : recommendations) {
+            // Fix: assicurati che artists non sia null
+            String artists = (song.artists != null) ? song.artists : "Unknown Artist";
+
+            out.println("RECOMMENDATION:" +
+                    song.id + ";" +
+                    song.name + ";" +
+                    artists + ";" +
+                    song.popularity + ";" +
+                    song.duration + ";" +
+                    song.friendsWhoLike + ";" +
+                    song.totalLikes + ";" +
+                    String.format(java.util.Locale.US, "%.2f", song.similarityScore));
         }
     }
 

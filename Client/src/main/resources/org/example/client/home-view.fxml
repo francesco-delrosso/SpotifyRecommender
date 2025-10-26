@@ -77,6 +77,8 @@
                                -fx-background-radius: 20;
                                -fx-padding: 8 20;
                                -fx-cursor: hand;"/>
+                <Button fx:id="btnRecommendations" text="Mostra Raccomandazioni" onAction="#handleRecommendations" />
+
             </HBox>
         </VBox>
     </top>

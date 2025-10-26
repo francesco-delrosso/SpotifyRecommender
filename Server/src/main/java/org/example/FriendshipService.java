@@ -57,7 +57,7 @@ public class FriendshipService {
             session.executeWrite(tx -> {
                 tx.run("MATCH (a:User {email: $requester})-[r:FRIEND_REQUEST]->(b:User {email: $user}) " +
                                 "DELETE r " +
-                                "CREATE (a)-[:FRIENDS]->(b), (b)-[:FRIENDS]->(a)",
+                                "CREATE (a)-[:FRIEND_OF]->(b), (b)-[:FRIEND_OF]->(a)",  // Cambiato da FRIENDS a FRIEND_OF
                         Values.parameters("user", userEmail, "requester", requesterEmail));
                 return null;
             });
@@ -80,7 +80,7 @@ public class FriendshipService {
     public void removeFriendship(String email1, String email2) {
         try (Session session = driver.session()) {
             session.executeWrite(tx -> {
-                tx.run("MATCH (a:User {email: $email1})-[r:FRIENDS]-(b:User {email: $email2}) " +
+                tx.run("MATCH (a:User {email: $email1})-[r:FRIEND_OF]-(b:User {email: $email2}) " +  // Cambiato da FRIENDS a FRIEND_OF
                                 "DELETE r",
                         Values.parameters("email1", email1, "email2", email2));
                 return null;
@@ -92,7 +92,7 @@ public class FriendshipService {
     public List<String> getFriends(String email) {
         try (Session session = driver.session()) {
             return session.executeRead(tx -> {
-                Result result = tx.run("MATCH (u:User {email: $email})-[:FRIENDS]->(friend) " +
+                Result result = tx.run("MATCH (u:User {email: $email})-[:FRIEND_OF]->(friend) " +  // Cambiato da FRIENDS a FRIEND_OF
                                 "RETURN friend.email AS email",
                         Values.parameters("email", email));
                 List<String> friends = new ArrayList<>();
