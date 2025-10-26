@@ -21,6 +21,31 @@ Neo4j is a leading **graph database management system** designed to handle highl
 - **Declarative Query Language**: Cypher provides intuitive graph querying capabilities
 - **High Performance**: Constant-time relationship traversal regardless of graph size
 
+  ---
+
+## The CAP Theorem and Neo4j's Role
+
+The CAP Theorem (Consistency, Availability, Partition Tolerance) is a core concept in distributed systems. It states that it is impossible for a distributed system to simultaneously guarantee all three properties.
+
+In the presence of a network failure (*Partition Tolerance* is an unavoidable requirement in real-world systems), the database must choose between:
+
+### Consistency (C)
+* **Definition:** All data replicas show the same value for every read operation. The user always sees the last completed write.
+* **Databases that prioritize it:** Neo4j (typically in CP configuration), Microsoft SQL Server, PostgreSQL, Redis, MongoDB.
+
+### Availability (A)
+* **Definition:** Every request receives a response (not an error), even if it's not guaranteed to be the most up-to-date version of the data. The system is always operational.
+* **Databases that prioritize it:** Cassandra, DynamoDB, CouchDB.
+
+### Partition Tolerance (P)
+* **Definition:** The system continues to operate even if nodes are isolated due to network communication failures. This is a *mandatory* requirement for a modern distributed database.
+
+### Neo4j's Positioning
+
+Neo4j prioritizes **Consistency** because the accuracy and integrity of relationships are fundamental in graph databases. If an operation creating a friendship link were not consistent across all nodes, traversal paths (like friend suggestions or shortest paths) would be incorrect. To guarantee this integrity, in case of a partition, Neo4j may temporarily sacrifice Availability, blocking some operations until Consistency is restored.
+
+---
+
 ### Application in SpotifyRecommender
 This project leverages Neo4j's capabilities to model:
 - **User Networks**: Friend relationships and social connections
