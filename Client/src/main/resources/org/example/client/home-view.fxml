@@ -21,64 +21,73 @@
             </VBox>
 
             <!-- Navigation Bar -->
-            <HBox spacing="15"
+            <!-- Navigation Bar -->
+            <!-- Navigation Bar -->
+            <HBox spacing="10"
                   alignment="CENTER_LEFT"
-                  style="-fx-background-color: #282828; -fx-padding: 15 30;">
+                  style="-fx-background-color: #282828; -fx-padding: 10 20;">
 
+                <!-- Left side buttons -->
                 <Button text="🎵 Home"
+                        onAction="#handleHome"
                         style="-fx-background-color: #1DB954;
-                               -fx-text-fill: white;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
+
+                <Button text="🎯 For You"
+                        onAction="#handleRecommendations"
+                        style="-fx-background-color: #2ecc71;
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
 
                 <Button onAction="#handleGoToFavorites"
-                        text="❤️ Favorites"
+                        text="♥Likes"
                         style="-fx-background-color: #e74c3c;
-               -fx-text-fill: white;
-               -fx-font-weight: bold;
-               -fx-background-radius: 20;
-               -fx-padding: 8 20;
-               -fx-cursor: hand;"/>
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
 
-
-
-
-
-                <Button text="👥 Find Friends"
+                <Button text="👥 Friends"
                         onAction="#handleGoToFriendsSearch"
                         style="-fx-background-color: #3498db;
-                               -fx-text-fill: white;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
 
-                <Button text="📬 Friend Requests"
+                <Button text="📬 Requests"
                         onAction="#handleGoToFriendRequests"
                         style="-fx-background-color: #9b59b6;
-                               -fx-text-fill: white;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
 
+                <!-- Spacer -->
                 <Region HBox.hgrow="ALWAYS"/>
 
+                <!-- Right side elements -->
                 <Label fx:id="userEmailLabel"
                        style="-fx-text-fill: #b3b3b3; -fx-font-size: 12px;"/>
 
-                <Button text="🚪 Logout"
+                <Button text="🚪 Exit"
                         onAction="#handleLogout"
                         style="-fx-background-color: #e74c3c;
-                               -fx-text-fill: white;
-                               -fx-font-weight: bold;
-                               -fx-background-radius: 20;
-                               -fx-padding: 8 20;
-                               -fx-cursor: hand;"/>
-                <Button fx:id="btnRecommendations" text="Mostra Raccomandazioni" onAction="#handleRecommendations" />
-
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 15;
+                   -fx-padding: 6 15;
+                   -fx-cursor: hand;"/>
             </HBox>
         </VBox>
     </top>

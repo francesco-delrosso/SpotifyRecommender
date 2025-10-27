@@ -309,7 +309,7 @@ public class HomeController {
 
     @FXML
     private void handleRecommendations() {
-        try {
+        /*try {
             String userEmail = this.currentUserEmail;
             List<Map<String, Object>> recommendations = clientService.getRecommendations(userEmail);
 
@@ -332,7 +332,13 @@ public class HomeController {
         } catch (IOException e) {
             System.err.println("Errore nel recupero delle raccomandazioni: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
+
+        currentPage = 0;
+        loadRecommendations();
+        pageLabel.setText("Reccomendations");
+        nextButton.setDisable(true);
+        prevButton.setDisable(true);
     }
 
 
@@ -368,6 +374,42 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void handleHome() {
+        currentPage = 0;
+        loadSongs();
+        pageLabel.setText("Page " + (currentPage + 1));
+        nextButton.setDisable(false);
+        prevButton.setDisable(currentPage == 0);
+    }
+
+    private void loadRecommendations() {
+        try {
+            List<Map<String, Object>> recs = clientService.getRecommendations(currentUserEmail);
+            songs.clear();
+
+            for (Map<String, Object> rec : recs) {
+                Song song = new Song(
+                        (String) rec.get("id"),
+                        (String) rec.get("name"),
+                        (String) rec.get("artists"),
+                        (Integer) rec.get("popularity"),
+                        (Integer) rec.get("duration")
+                );
+                songs.add(song);
+            }
+
+            songTable.setItems(songs);
+            updateButtons();
+            updatePageLabel();
+
+        } catch (Exception e) {
+            showError("Errore nel caricamento delle raccomandazioni: " + e.getMessage());
+        }
+    }
+
+
     @FXML
     private void handleLogout() {
         try {
