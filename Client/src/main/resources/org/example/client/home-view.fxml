@@ -47,7 +47,7 @@
                    -fx-cursor: hand;"/>
 
                 <Button onAction="#handleGoToFavorites"
-                        text="♥Likes"
+                        text="♥ Likes"
                         style="-fx-background-color: #e74c3c;
                    -fx-text-fill: white;
                    -fx-font-weight: bold;
