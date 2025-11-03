@@ -8,9 +8,9 @@
 
     <top>
         <VBox style="-fx-background-color: #9b59b6; -fx-padding: 20;">
-            <Label text="🔍 Cerca Amici"
+            <Label text="👥 Search Friends"
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-            <Label text="Trova nuovi amici e gestisci la tua lista"
+            <Label text="Find new friends and manage your list"
                    style="-fx-font-size: 14px; -fx-text-fill: #f0f0f0;">
                 <VBox.margin>
                     <Insets top="5"/>
@@ -22,36 +22,31 @@
     <center>
         <VBox spacing="20" style="-fx-padding: 30;">
 
-            <!-- Search Section -->
-            <!-- Search Section -->
-            <VBox spacing="15" style="-fx-background-color: #282828; -fx-background-radius: 10; -fx-padding: 20;">
-                <Label text="Cerca Utenti"
+            <VBox spacing="15" style="-fx-background-color: #282828; -fx-background-radius: 10; -fx-padding: 20;" VBox.vgrow="ALWAYS">
+                <Label text="Search Users"
                        style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
 
                 <HBox spacing="10">
                     <TextField fx:id="searchField"
-                               promptText="Inserisci email..."
+                               promptText="Enter email..."
                                HBox.hgrow="ALWAYS"
-                               style="-fx-background-color: #181818;
-                         -fx-text-fill: white;
+                               style="-fx-background-color: #181818; -fx-text-fill: white;
                          -fx-prompt-text-fill: #b3b3b3;
                          -fx-background-radius: 20;
                          -fx-padding: 10 15;
                          -fx-font-size: 14px;"/>
 
-                    <Button text="🔍 Cerca"
+                    <Button text="🔍 Search"
                             onAction="#handleSearch"
-                            style="-fx-background-color: #1DB954;
-                       -fx-text-fill: white;
+                            style="-fx-background-color: #1DB954; -fx-text-fill: white;
                        -fx-font-weight: bold;
                        -fx-background-radius: 20;
                        -fx-padding: 10 25;
                        -fx-cursor: hand;"/>
 
-                    <Button text="📋 Mostra Tutti"
+                    <Button text="Show All"
                             onAction="#handleLoadAllUsers"
-                            style="-fx-background-color: #3498db;
-                       -fx-text-fill: white;
+                            style="-fx-background-color: #3498db; -fx-text-fill: white;
                        -fx-font-weight: bold;
                        -fx-background-radius: 20;
                        -fx-padding: 10 25;
@@ -59,9 +54,8 @@
                 </HBox>
 
                 <ListView fx:id="usersListView"
-                          prefHeight="300"
-                          style="-fx-background-color: #181818;
-                   -fx-control-inner-background: #181818;
+                          VBox.vgrow="ALWAYS"
+                          style="-fx-background-color: #181818; -fx-control-inner-background: #181818;
                    -fx-border-color: transparent;">
                     <VBox.margin>
                         <Insets top="10"/>
@@ -69,27 +63,25 @@
                 </ListView>
             </VBox>
 
-            <!-- Friends Section -->
+
             <VBox spacing="15" style="-fx-background-color: #282828; -fx-background-radius: 10; -fx-padding: 20;"
                   VBox.vgrow="ALWAYS">
                 <HBox spacing="10" alignment="CENTER_LEFT">
-                    <Label text="I Tuoi Amici"
+                    <Label text="Your Friends"
                            style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Button text="🔄"
+                    <Button text="Refresh"
                             onAction="#handleRefreshFriends"
                             style="-fx-background-color: #1DB954;
                                    -fx-text-fill: white;
                                    -fx-font-weight: bold;
                                    -fx-background-radius: 20;
-                                   -fx-padding: 5 15;
-                                   -fx-cursor: hand;"/>
+                                   -fx-padding: 5 15; -fx-cursor: hand;"/>
                 </HBox>
 
                 <ListView fx:id="friendsListView"
                           VBox.vgrow="ALWAYS"
-                          style="-fx-background-color: #181818;
-                               -fx-control-inner-background: #181818;
+                          style="-fx-background-color: #181818; -fx-control-inner-background: #181818;
                                -fx-border-color: transparent;"/>
             </VBox>
 
@@ -98,10 +90,9 @@
 
     <bottom>
         <HBox alignment="CENTER" style="-fx-background-color: #181818; -fx-padding: 20;">
-            <Button text="⬅ Torna alla Home"
+            <Button text="⬅ Back to Home"
                     onAction="#handleBack"
-                    style="-fx-background-color: #282828;
-                           -fx-text-fill: white;
+                    style="-fx-background-color: #282828; -fx-text-fill: white;
                            -fx-font-weight: bold;
                            -fx-background-radius: 20;
                            -fx-padding: 10 25;
