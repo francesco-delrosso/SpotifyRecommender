@@ -374,7 +374,126 @@ CREATE (a)-[:FRIENDS]->(b),
 MATCH (u:User {email: $email}), (s:Song {songId: $songId})
 MERGE (u)-[:FAVORITES]->(s);
 ```
+
+## Hybrid Recommendation Query Analysis
+
+This section analyzes the complex Cypher query that generates song recommendations by combining **Social**, **Popularity**, and **Content-Based** factors into a single weighted score.
+
+### 7.1 Weighted Score Breakdown
+
+The final score (`finalScore`) determines the recommendation ranking based on the following weighted components:
+
+| Category | Score Factor | Formula (Weight) | Rationale |
+| :--- | :--- | :--- | :--- |
+| **Social** | `friendsWhoLike` | $\times 50$ | Highest weight for social proof (songs liked by friends). |
+| **Popularity** | `totalLikes` | $\times 10$ | Baseline score based on global popularity. |
+| **Content (Audio)** | `avgSimilarityDiff` | $\times -100$ | Penalizes difference. A **small** difference (high similarity) results in a **high** positive score. |
+| **Content (Genre)** | `genreBonus` | $\times 75$ | Strong bonus if the song matches the user's Top 5 Genres. |
+| **Content (Artist)** | `artistBonus` | $\times 75$ | Strong bonus if the song's artist matches the user's Top 5 Artists. |
+
+### 7.2 Critical Cypher Steps for Performance
+
+The query is optimized using aggregation (`COLLECT`) and context passing (`WITH`) to prevent query fan-out, which is critical for performance in highly connected graphs.
+
+| Step | Cypher Action | Purpose in Query Logic |
+| :--- | :--- | :--- |
+| **Profile Extraction (Step 1)** | `COLLECT(...)[..5]` | Collects only the **Top 5** artists and genres based on frequency, limiting subsequent comparisons. |
+| **Fan-Out Prevention (Step 3)** | `COLLECT(DISTINCT artistIds)` | **CRITICAL:** Gathers all multi-value attributes (artists, genres) into single lists per song. This ensures the song is processed **once** for scoring. |
+| **Audio Similarity (Step 4a)** | `UNWIND userLikedSongs` | Unwinds the user's liked songs list to perform a per-feature, song-by-song comparison against the candidate song, then aggregates the result using `AVG`. |
+| **Affinity Check (Step 4b/4c)** | `CASE WHEN any(id IN list1 WHERE id IN list2)` | Efficiently checks if there is any intersection between the user's Top 5 lists and the candidate song's attributes. |
+
+### 7.3 Full Cypher Query
+
+\`\`\`cypher
+String query =
+        // STEP 1: Get User, their Top 5 Genres, Top 5 Artists, and all Liked Songs
+        "MATCH (u:User {email: $email}) " +
+
+                // Get Top 5 Genres
+                "OPTIONAL MATCH (u)-[:LIKES]->(:Song)-[:HAS_GENRE]->(likedGenre:Genre) " +
+                "WITH u, likedGenre, count(likedGenre) AS genreFrequency " +
+                "ORDER BY genreFrequency DESC " +
+                "WITH u, collect(likedGenre.genreId)[..5] AS userTopGenres " +
+
+                // Get Top 5 Artists
+                "OPTIONAL MATCH (u)-[:LIKES]->(:Song)-[:PERFORMED_BY]->(likedArtist:Artist) " +
+                "WITH u, userTopGenres, likedArtist, count(likedArtist) AS artistFrequency " +
+                "ORDER BY artistFrequency DESC " +
+                "WITH u, userTopGenres, collect(likedArtist.artistId)[..5] AS userTopArtists " +
+
+                // Get all liked songs (for similarity calculation)
+                "MATCH (u)-[:LIKES]->(userLikedSong:Song) " +
+                "WITH u, userTopGenres, userTopArtists, collect(userLikedSong) AS userLikedSongs " +
+
+                // STEP 2: Find Candidate Songs from Friends
+                "MATCH (u)-[:FRIEND_OF]-(friend:User)-[:LIKES]->(recSong:Song) " +
+                "WHERE NOT recSong IN userLikedSongs " +
+
+                // STEP 3: Get Candidate Song Details (Counts, Artists, Genre)
+                "WITH u, userTopGenres, userTopArtists, userLikedSongs, recSong, count(DISTINCT friend) AS friendsWhoLike " +
+
+                "MATCH (allUser:User)-[:LIKES]->(recSong) " +
+                "WITH u, userTopGenres, userTopArtists, userLikedSongs, recSong, friendsWhoLike, count(DISTINCT allUser) AS totalLikes " +
+
+                // FIX: Collect *both* artists AND genres to prevent duplicate rows
+                "MATCH (recSong)-[:PERFORMED_BY]->(recArtist:Artist) " +
+                "MATCH (recSong)-[:HAS_GENRE]->(recGenre:Genre) " +
+                "WITH u, userTopGenres, userTopArtists, userLikedSongs, recSong, friendsWhoLike, totalLikes, " +
+                "     collect(DISTINCT recArtist.artistName) AS artistNames, " +
+                "     collect(DISTINCT recArtist.artistId) AS artistIds, " +
+                "     collect(DISTINCT recGenre.genreId) AS songGenreIds " +
+
+                // STEP 4: Calculate All Scores
+
+                // 4a. Expanded Content Similarity (7 properties)
+                "UNWIND userLikedSongs AS userSong " +
+                "WITH u, userTopGenres, userTopArtists, recSong, friendsWhoLike, totalLikes, artistNames, artistIds, songGenreIds, userSong, " +
+                "     abs(recSong.danceability - userSong.danceability) AS diffDance, " +
+                "     abs(recSong.energy - userSong.energy) AS diffEnergy, " +
+                "     abs(recSong.valence - userSong.valence) AS diffValence, " +
+                "     abs(recSong.acousticness - userSong.acousticness) AS diffAcoustic, " +
+                "     abs(recSong.instrumentalness - userSong.instrumentalness) AS diffInstrument, " +
+                "     abs(recSong.speechiness - userSong.speechiness) AS diffSpeech, " +
+                "     abs(recSong.liveness - userSong.liveness) AS diffLive " +
+
+                // Average the differences
+                "WITH u, userTopGenres, userTopArtists, recSong, friendsWhoLike, totalLikes, artistNames, artistIds, songGenreIds, " +
+                "     AVG(diffDance + diffEnergy + diffValence + diffAcoustic + diffInstrument + diffSpeech + diffLive) AS avgSimilarityDiff " +
+
+                // 4b. Genre Affinity Bonus (Content)
+                "WITH u, userTopGenres, userTopArtists, recSong, friendsWhoLike, totalLikes, artistNames, artistIds, avgSimilarityDiff, songGenreIds, " +
+                "     CASE WHEN any(id IN songGenreIds WHERE id IN userTopGenres) THEN 1 ELSE 0 END AS genreBonus " +
+
+                // 4c. Artist Affinity Bonus (Content)
+                "WITH u, userTopArtists, recSong, friendsWhoLike, totalLikes, artistNames, artistIds, avgSimilarityDiff, genreBonus, " +
+                "     CASE WHEN any(id IN artistIds WHERE id IN userTopArtists) THEN 1 ELSE 0 END AS artistBonus " +
+
+                // STEP 5: Calculate Final Score and Return
+                "WITH recSong.songId AS id, " +
+                "     recSong.trackName AS name, " +
+                "     artistNames, " +
+                "     recSong.popularity AS popularity, " +
+                "     recSong.duration_ms AS duration, " +
+                "     friendsWhoLike, " +
+                "     totalLikes, " +
+                "     (friendsWhoLike * 50) AS friendScore, " +
+                "     (totalLikes * 10) AS popularityScore, " +
+                "     (avgSimilarityDiff * -100) AS contentScore, " +
+                "     (genreBonus * 75) AS genreScore, " +
+                "     (artistBonus * 75) AS artistScore " +
+
+                // Calculate final score
+                "WITH id, name, artistNames, popularity, duration, friendsWhoLike, totalLikes, " +
+                "     (friendScore + popularityScore + contentScore + genreScore + artistScore) AS finalScore " +
+
+                "RETURN id, name, artistNames, popularity, duration, friendsWhoLike, totalLikes, finalScore AS similarityScore " +
+                "ORDER BY similarityScore DESC " +
+                "LIMIT $limit";
+
+
 ---
+
+
 
 #  Summary
 
