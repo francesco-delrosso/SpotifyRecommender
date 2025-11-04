@@ -169,10 +169,3 @@ jupyter:
 - Analytics for user listening patterns.
 
 ---
-
-### Explanation
-
-1. **Client (JavaFX)**: Users interact with the interface, send requests, and receive recommendations.  
-2. **Server (Java)**: Handles login, requests, favorites updates, and computes recommendations. Communicates with Neo4j via Cypher queries.  
-3. **Neo4j (Graph Database)**: Stores users, songs, favorites, and friendships; enables complex queries and relationship-based suggestions.  
-4. **Jupyter Notebook**: Analyzes datasets and statistics to improve recommendations, using CSV imports and Python libraries (pandas, numpy, networkx, etc.).  
