@@ -2,11 +2,20 @@
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [Property Graph Model](#property-graph-model)
-3. [Architecture and Core Components](#architecture-and-core-components)
-4. [Cypher Query Language](#cypher-query-language)
-5. [Data Modeling and Performance](#data-modeling-and-performance)
-6. [Use Cases and Applications](#use-cases-and-applications)
+2. [The CAP Theorem and Neo4js Role](#the-cap-theorem-and-neo4js-role)
+3. [Property Graph Model](#property-graph-model)
+4. [Architecture and Core Components](#architecture-and-core-components)
+    - [Deploy & Setup Installation via Docker](#deploy--setup-installation-via-docker)
+5. [Cypher Query Language](#cypher-query-language)
+6. [Data Modeling and Performance](#data-modeling-and-performance)
+7. [Use Cases and Applications](#use-cases-and-applications)
+8. [Advantages and Disadvantages of Neo4j](#advantages-and-disadvantages-of-neo4j)
+9. [When to Use Neo4j](#when-to-use-neo4j)
+10. [Example in SpotifyRecommender](#example-in-spotifyrecommender)
+    - [Hybrid Recommendation Query Analysis](#hybrid-recommendation-query-analysis)
+11. [Summary](#summary)
+12. [Further Reading](#further-reading)
+
 
 
 ---
@@ -21,7 +30,7 @@ Neo4j is a leading **graph database management system** designed to handle highl
 - **Declarative Query Language**: Cypher provides intuitive graph querying capabilities
 - **High Performance**: Constant-time relationship traversal regardless of graph size
 
-  ---
+---
 
 ## The CAP Theorem and Neo4j's Role
 
@@ -104,6 +113,27 @@ The storage layer uses direct memory mapping to disk, enabling:
 - **Constant-time relationship traversal**: O(1) performance regardless of graph size
 - **Efficient memory utilization**: Only required data is loaded into memory
 - **Predictable performance**: Linear scaling with relationship complexity
+
+### Deploy & Setup (Installation via Docker)
+
+Neo4j can be easily installed and run as a **Docker container**, which is the recommended approach for most development and testing environments, including the project **SpotifyRecommender**.
+
+Using Docker ensures that the environment is isolated and fully replicable across team members' machines.
+
+#### Docker Command Example
+
+The following command runs the latest Neo4j image, sets the initial security credentials, and exposes the Bolt port (`7687`) and the HTTP/Browser port (`7474`):
+
+```bash
+docker run \
+    --name neo4j-spotify \
+    -p 7474:7474 -p 7687:7687 \
+    -e NEO4J_AUTH=neo4j/password \
+    -v $HOME/neo4j/data:/data \
+    neo4j:latest
+```
+
+Once the container is started, Neo4j is accessible via the **Neo4j Browser** at `http://localhost:7474`, using the credentials `neo4j` and `password`.
 
 ---
 
@@ -328,9 +358,9 @@ Enterprise visualization platform offering:
 
 ---
 
-#  Advantages and Disadvantages of Neo4j
+## Advantages and Disadvantages of Neo4j
 
-|  Advantages |  Disadvantages |
+| Advantages | Disadvantages |
 |---------------|------------------|
 | Intuitive modeling of connected data | Can require powerful hardware for large graphs |
 | Fast traversal and relationship queries | Less suited for purely tabular data |
@@ -340,7 +370,7 @@ Enterprise visualization platform offering:
 
 ---
 
-# When to Use Neo4j
+## When to Use Neo4j
 
 **Use Neo4j if:**
 - Your data is highly interconnected (social, network, recommendation, graph analytics)
@@ -353,7 +383,7 @@ Enterprise visualization platform offering:
 
 ---
 
-#  Example in SpotifyRecommender
+## Example in SpotifyRecommender
 
 ```cypher
 // Create users
@@ -375,11 +405,11 @@ MATCH (u:User {email: $email}), (s:Song {songId: $songId})
 MERGE (u)-[:FAVORITES]->(s);
 ```
 
-## Hybrid Recommendation Query Analysis
+### Hybrid Recommendation Query Analysis
 
 This section analyzes the complex Cypher query that generates song recommendations by combining **Social**, **Popularity**, and **Content-Based** factors into a single weighted score.
 
-### 7.1 Weighted Score Breakdown
+#### Weighted Score Breakdown
 
 The final score (`finalScore`) determines the recommendation ranking based on the following weighted components:
 
@@ -391,7 +421,7 @@ The final score (`finalScore`) determines the recommendation ranking based on th
 | **Content (Genre)** | `genreBonus` | $\times 75$ | Strong bonus if the song matches the user's Top 5 Genres. |
 | **Content (Artist)** | `artistBonus` | $\times 75$ | Strong bonus if the song's artist matches the user's Top 5 Artists. |
 
-### 7.2 Critical Cypher Steps for Performance
+#### Critical Cypher Steps for Performance
 
 The query is optimized using aggregation (`COLLECT`) and context passing (`WITH`) to prevent query fan-out, which is critical for performance in highly connected graphs.
 
@@ -402,9 +432,9 @@ The query is optimized using aggregation (`COLLECT`) and context passing (`WITH`
 | **Audio Similarity (Step 4a)** | `UNWIND userLikedSongs` | Unwinds the user's liked songs list to perform a per-feature, song-by-song comparison against the candidate song, then aggregates the result using `AVG`. |
 | **Affinity Check (Step 4b/4c)** | `CASE WHEN any(id IN list1 WHERE id IN list2)` | Efficiently checks if there is any intersection between the user's Top 5 lists and the candidate song's attributes. |
 
-### 7.3 Full Cypher Query
+#### Full Cypher Query
 
-\`\`\`cypher
+```cypher
 String query =
         // STEP 1: Get User, their Top 5 Genres, Top 5 Artists, and all Liked Songs
         "MATCH (u:User {email: $email}) " +
@@ -489,13 +519,11 @@ String query =
                 "RETURN id, name, artistNames, popularity, duration, friendsWhoLike, totalLikes, finalScore AS similarityScore " +
                 "ORDER BY similarityScore DESC " +
                 "LIMIT $limit";
-
+```
 
 ---
 
-
-
-#  Summary
+## Summary
 
 Neo4j lets you:
 - Represent **real-world relationships** naturally
@@ -503,13 +531,13 @@ Neo4j lets you:
 - Build **powerful recommendation engines**
 
 In **SpotifyRecommender**, Neo4j enables:
-- Friendships between users  
-- Song favorites  
-- Smart, connection-based recommendations  
+- Friendships between users
+- Song favorites
+- Smart, connection-based recommendations
 
 ---
 
-#  Further Reading
+## Further Reading
 
 - [Official Neo4j Documentation](https://neo4j.com/docs/)
 - [Cypher Query Language Reference](https://neo4j.com/developer/cypher/)
