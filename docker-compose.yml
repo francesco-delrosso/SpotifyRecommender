@@ -15,19 +15,3 @@ services:
       - ./import:/import
       - ./logs:/logs
     restart: always
-
-  jupyter:
-    image: jupyter/base-notebook:latest
-    container_name: jupyter-notebook
-    ports:
-      - "8888:8888"
-    volumes:
-      - ./notebooks:/home/jovyan/work
-    environment:
-      - JUPYTER_TOKEN=                # ← lasciato vuoto: disabilita il token
-      - JUPYTER_ENABLE_LAB=yes        # (facoltativo: apre JupyterLab invece di Classic)
-    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''  # ← forzato vuoto
-    depends_on:
-      - neo4j
-    restart: unless-stopped
-
