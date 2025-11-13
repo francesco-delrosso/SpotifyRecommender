@@ -106,7 +106,7 @@ Run the server and client.
 
 ## Docker Compose Explanation
 
-The `docker-compose.yml` file orchestrates two services: `neo4j` and `jupyter`.
+The `docker-compose.yml` file orchestrates the: `neo4j` service.
 
 ### 1. Neo4j Service
 
@@ -128,28 +128,6 @@ neo4j:
     - ./logs:/logs
   restart: always
 ```
-
-### 2. Jupyter Notebook Service
-
-```yaml
-jupyter:
-  image: jupyter/base-notebook:latest
-  container_name: jupyter-notebook
-  ports:
-    - "8888:8888"
-  volumes:
-    - ./notebooks:/home/jovyan/work
-  environment:
-    - JUPYTER_TOKEN=
-    - JUPYTER_ENABLE_LAB=yes
-  command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''
-  depends_on:
-    - neo4j
-  restart: unless-stopped
-```
-
-> Together, these services provide a reproducible environment for both database management and data analysis.
-
 ---
 
 ## Authors
