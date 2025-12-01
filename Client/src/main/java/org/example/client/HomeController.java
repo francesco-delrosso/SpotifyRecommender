@@ -29,6 +29,7 @@ public class HomeController {
     @FXML private Button prevButton;
     @FXML private Button nextButton;
     @FXML private Label userEmailLabel;
+    @FXML private TableColumn<Song, Void> playColumn;
 
     private ClientService clientService;
     private ObservableList<Song> songs;
@@ -52,10 +53,53 @@ public class HomeController {
         artistColumn.setCellValueFactory(data -> data.getValue().artistsProperty());
         popularityColumn.setCellValueFactory(data -> data.getValue().popularityProperty().asObject());
 
+
         // Colonna cuori
         setupFavoriteColumn();
+        //Colonna play
+        setupPlayColumn();
 
         songTable.setItems(songs);
+    }
+
+
+    private void setupPlayColumn() {
+        playColumn.setCellFactory(column -> new TableCell<Song, Void>() {
+            private final Button playBtn = new Button("▶");
+
+            {
+                playBtn.setStyle("-fx-background-color: #1DB954; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;");
+                playBtn.setOnAction(event -> {
+                    Song song = getTableView().getItems().get(getIndex());
+                    handlePlaySong(song);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(playBtn);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+        });
+    }
+
+    private void handlePlaySong(Song song) {
+        try {
+            clientService.playSong(song.getId(), currentUserEmail);
+            //alert di conferma
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Playing Song");
+            alert.setHeaderText(null);
+            alert.setContentText("Playing: " + song.nameProperty().get());
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setUserEmail(String email) {

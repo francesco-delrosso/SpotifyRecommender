@@ -141,6 +141,7 @@
                                  text="❤"
                                  prefWidth="60"
                                  style="-fx-alignment: CENTER;"/>
+                    <TableColumn fx:id="playColumn" text="▶" prefWidth="50" style="-fx-alignment: CENTER;"/>
 
 
 

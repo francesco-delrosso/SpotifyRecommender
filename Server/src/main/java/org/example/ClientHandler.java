@@ -191,17 +191,22 @@ class ClientHandler extends Thread {
                     throw new RuntimeException(e);
                 }
                 break;
+            case "PLAY":
+                if (parts.length == 3) {
+                    String songId = parts[1];
+                    String userEmail = parts[2];
 
-
-
-
-
-
-
-
-
-            default:
-                out.println("ERROR|Comando sconosciuto");
+                    // Invia a Kafka tramite il servizio statico
+                    if (Main.kafkaService != null) {
+                        Main.kafkaService.sendPlayEvent(songId, userEmail);
+                        out.println("OK"); // Conferma ricezione
+                    } else {
+                        out.println("ERROR|Kafka non attivo");
+                    }
+                } else {
+                    out.println("ERROR|Formato non valido");
+                }
+                break;
         }
     }
 

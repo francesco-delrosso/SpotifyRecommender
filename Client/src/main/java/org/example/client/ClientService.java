@@ -138,6 +138,20 @@ public class ClientService {
         return in.readLine();
     }
 
+    // Metodo per simulare il play e inviare l'evento a Kafka
+    public void playSong(String songId, String userEmail) throws IOException {
+        if (!connected) connect();
+
+        // Protocollo: PLAY | ID_CANZONE | ID_UTENTE
+        out.println("PLAY|" + songId + "|" + userEmail);
+
+        // Leggi la risposta (OK o ERROR)
+        String response = in.readLine();
+        if (response != null && !response.equals("OK")) {
+            System.err.println("Errore dal server: " + response);
+        }
+    }
+
     // Lista richieste di amicizia ricevute
     public String getFriendRequests(String email) throws IOException {
         if (!connected) {
