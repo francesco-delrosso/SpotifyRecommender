@@ -41,4 +41,4 @@ services:
       - kafka_data:/var/lib/kafka/data
 
 volumes:
-  kafka_data:
+  kafka_data: 

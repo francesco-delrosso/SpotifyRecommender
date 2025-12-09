@@ -81,9 +81,12 @@ public class KafkaService {
     private void updateSongPopularity(String songId) {
         try (Session session = neo4jDriver.session()) {
             session.executeWrite(tx -> {
-                String query = "MATCH (s:Song {songId: $id}) " +
-                        "SET s.popularity = coalesce(s.popularity, 0) + 1 " +
-                        "RETURN s.trackName as name, s.popularity as pop";
+                // Invece di incrementare solo un numero, traccia CHI ha ascoltato COSA e QUANDO
+                String query = "MATCH (u:User {email: $email}), (s:Song {songId: $songId}) " +
+                        "MERGE (u)-[r:LISTENED_TO]->(s) " +
+                        "ON CREATE SET r.count = 1, r.lastListened = datetime() " +
+                        "ON MATCH SET r.count = r.count + 1, r.lastListened = datetime() " +
+                        "SET s.popularity = coalesce(s.popularity, 0) + 1"; // Mantieni anche la popolarità globale
 
                 var result = tx.run(query, org.neo4j.driver.Values.parameters("id", songId));
                 if (result.hasNext()) {
